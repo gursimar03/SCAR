@@ -12,3 +12,4 @@ val Pink40 = Color(0xFF7D5260)
 
 val cardBg= Color(0xFF1E1E1E)
 val mainBg = Color(0xFF3E316F)
+val userBg = Color(0xFF1E1C26)

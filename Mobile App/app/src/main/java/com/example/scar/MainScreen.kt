@@ -72,11 +72,12 @@ fun Navigation()
     {
         composable(route = Leaderboard.World.route)
         {
-            leaderboard(navController = navController)
+            leaderboard(region = null,navController = navController)
         }
-        composable(route = Screen.MainScreen.route){
-            MainScreen(navController = navController)
+        composable(route = Leaderboard.Regional.route){
+            leaderboard(navController = navController,region="ireland")
         }
+
     }
 
 }

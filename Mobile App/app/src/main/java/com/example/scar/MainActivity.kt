@@ -1,8 +1,11 @@
 package com.example.scar
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -44,6 +47,7 @@ import com.example.scar.ui.theme.SCARTheme
 import com.example.scar.ui.theme.SCARTheme
 import com.example.scar.ui.theme.cardBg
 import com.example.scar.ui.theme.mainBg
+import org.json.JSONArray
 
 
 class MainActivity  : ComponentActivity() {
@@ -51,6 +55,7 @@ class MainActivity  : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             SCARTheme {
+//                createJson()
                 // A surface container using the 'background' color from the theme
                 Navigation()
 //
@@ -79,4 +84,5 @@ class MainActivity  : ComponentActivity() {
             }
         }
     }
+
 }

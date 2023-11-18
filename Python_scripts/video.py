@@ -1,8 +1,27 @@
+#********************************************************************
+# Alpha version of the body detection script for SCAR project       *
+# Author: Josef Zemlicka SD3b                                       *
+#********************************************************************
+# This script uses openCV amd mediapipe pose model to detect bodies *
+# and draw a circle in the middle of the screen.                    *
+# The circle will be green if the enemy is inside the circle,       *
+# otherwise, 3 blue dots will be lit up to indicate the 3 closest   *
+# LED lights on the scope                                           *
+#*****************************************************************************
+# REFERENCES:                                                                *
+# https://www.analyticsvidhya.com/blog/2021/05/pose-estimation-using-opencv/ *
+# https://github.com/google/mediapipe                                        *
+# LED indicator positions around the circle were coded with the help of      *
+# GitHub Copilot                                                             *
+#*****************************************************************************
+
+
 import cv2
 import numpy as np
 import mediapipe as mp
 import math as Math
 
+# Setup the video capture to read from the webcam
 cap = cv2.VideoCapture(0)
 
 # Load the mediapipe pose model
@@ -17,6 +36,7 @@ height, width, _ = frame.shape
 # Define the center and radius of the circle
 center = (width // 2, height // 2)
 radius = min(width, height) // 4
+
 
 while cap.isOpened():
     ret, frame = cap.read()
@@ -34,7 +54,7 @@ while cap.isOpened():
     if results.pose_landmarks:
         mpDraw.draw_landmarks(annotatedImage, results.pose_landmarks, mpPose.POSE_CONNECTIONS)
 
-    # Draw the big red circle in the middle of the screen
+    # Draw the scope border in the middle of the screen
     cv2.circle(annotatedImage, center, radius, (0, 0, 255), 2)
 
     # Check if a body is detected
@@ -70,10 +90,6 @@ while cap.isOpened():
             for i in range(8):
                 color = (255, 0, 0) if i in closest_leds else (34, 34, 34)
                 cv2.circle(annotatedImage, (int(ledIndicators[i][0]), int(ledIndicators[i][1])), 10, color, -1)
-
-            
-
-            
 
     cv2.imshow('Body Detection', annotatedImage)
 

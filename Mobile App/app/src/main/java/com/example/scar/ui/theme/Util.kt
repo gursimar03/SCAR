@@ -11,7 +11,7 @@ fun createJson(): JSONArray {
         // Create an array to hold user objects
 
 
-        // User 1
+        // com.example.scar.ui.theme.User 1
         val user1 = JSONObject()
         user1.put("user_id", 1)
         user1.put("username", "TheOne")
@@ -21,7 +21,7 @@ fun createJson(): JSONArray {
         user1.put("traveled", 3200)
         jsonArray.put(user1)
 
-        // User 2
+        // com.example.scar.ui.theme.User 2
         val user2 = JSONObject()
         user2.put("user_id", 2)
         user2.put("username", "Matt")
@@ -31,7 +31,7 @@ fun createJson(): JSONArray {
         user2.put("traveled", 1200)
         jsonArray.put(user2)
 
-        // User 3
+        // com.example.scar.ui.theme.User 3
         val user3 = JSONObject()
         user3.put("user_id", 3)
         user3.put("username", "JeremyXO")
@@ -41,7 +41,7 @@ fun createJson(): JSONArray {
         user3.put("traveled", 2800)
         jsonArray.put(user3)
 
-        // User 4
+        // com.example.scar.ui.theme.User 4
         val user4 = JSONObject()
         user4.put("user_id", 4)
         user4.put("username", "BigGlockEnergy")
@@ -51,7 +51,7 @@ fun createJson(): JSONArray {
         user4.put("traveled", 8000)
         jsonArray.put(user4)
 
-        // User 5
+        // com.example.scar.ui.theme.User 5
         val user5 = JSONObject()
         user5.put("user_id", 5)
         user5.put("username", "kennyS")

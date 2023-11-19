@@ -2,40 +2,17 @@
 
 package com.example.scar.ui.theme
 
+import androidx.fragment.app.activityViewModels
 import android.annotation.SuppressLint
-import android.content.res.Configuration
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import android.util.Log
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,30 +23,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.max
-import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
-import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.scar.R
-import org.json.JSONArray
-import org.json.JSONObject
+import com.example.scar.network.Api
+import com.example.scar.screens.LeaderboardViewModel
+import kotlinx.serialization.*
 import kotlin.math.max
 import kotlin.math.min
 
@@ -395,17 +364,36 @@ fun LeaderboardItem(entry: LeaderboardEntry, isGold: Boolean, index:Int) {
 
 @Composable
 fun LeaderboardUI() {
-    var jsonArray = JSONArray()
-    jsonArray = createJson();
+//    val viewModel:LeaderboardViewModel = viewModel()
+//    val vm = viewModel<LeaderboardViewModel>()
+    val leaderboardViewModel: LeaderboardViewModel = viewModel()
+
+
+
+
+//    leaderboardViewModel.getUserInfo()
+//    Log.d("leaderboarddata",leaderboardViewModel.leaderboardData.toString())
+    val jsonArray = createJson();
+    for (i in 0 until jsonArray.length()) {
+        val item = jsonArray.getJSONObject(i)
+        Log.d("Item", item.toString())
+//        Log.d("id", item.getInt("user_id").toString())
+//        User.fromJsonObject(item)
+
+
+        // Your code here
+    }
+//    val peopleList = Json.decodeFromString<List<com.example.scar.ui.theme.User>>(jsonArray)
+//    Log.d("USER", peopleList.toString())
     val leaderboardData = remember {
         listOf(
-            LeaderboardEntry("User 1", 500),
-            LeaderboardEntry("User 2", 750),
-            LeaderboardEntry("User 3", 600),
-            LeaderboardEntry("User 4", 900),
-            LeaderboardEntry("User 5", 800),
-            LeaderboardEntry("User 6", 700),
-            LeaderboardEntry("User 7", 550),
+            LeaderboardEntry("user 1", 500),
+            LeaderboardEntry("user 2", 750),
+            LeaderboardEntry("user 3", 600),
+            LeaderboardEntry("user 4", 900),
+            LeaderboardEntry("user 5", 800),
+            LeaderboardEntry("user 6", 700),
+            LeaderboardEntry("user 7", 550),
         )
     }
 

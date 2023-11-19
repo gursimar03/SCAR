@@ -46,8 +46,15 @@ import androidx.compose.ui.unit.sp
 import com.example.scar.ui.theme.SCARTheme
 import com.example.scar.ui.theme.SCARTheme
 import com.example.scar.ui.theme.cardBg
+import com.example.scar.ui.theme.createJson
 import com.example.scar.ui.theme.mainBg
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import org.json.JSONArray
+import java.io.IOException
 
 
 class MainActivity  : ComponentActivity() {
@@ -55,31 +62,39 @@ class MainActivity  : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             SCARTheme {
-//                createJson()
+
+                Log.d("JSON", createJson().toString())
                 // A surface container using the 'background' color from the theme
                 Navigation()
+
+//                val client = OkHttpClient()
 //
-//                val url = "http://192.168.1.5:5000//match/1"  // Replace with your actual URL
+//                val url = "https://demo5970075.mockable.io/user" // Replace with your HTTP URL
 //
-//                // Create a request queue
-//                val requestQueue = Volley.newRequestQueue(this)
+//                val request = Request.Builder()
+//                    .url(url)
+//                    .build()
 //
-//                // Create a GET request
-//                val jsonObjectRequest = JsonObjectRequest(
-//                    Request.Method.GET, url, null,
-//                    Response.Listener { response ->
-//                        // Handle the JSON response
-//                        val message = response.getString("message")
-//                        Log.d("JSON","$message")
-//                    },
-//                    Response.ErrorListener { error ->
-//                        // Handle errors here
-//                        Log.d("ada:", "Error: ${error.message}")
+//                client.newCall(request).enqueue(object : Callback {
+//                    override fun onResponse(call: Call, response: Response) {
+//                        if (response.isSuccessful) {
+//                            val responseBody = response.body()?.string()
+//                            println(responseBody)
+//                            Log.d("success",responseBody.toString())
+//
+//                        } else {
+//                            println("Request failed with code: ${response.code()}")
+//                            Log.d("fail",response.code().toString())
+//                        }
 //                    }
-//                )
 //
-//                // Add the request to the request queue
-//                requestQueue.add(jsonObjectRequest)
+//                    override fun onFailure(call: Call, e: IOException) {
+//                        e.printStackTrace()
+//                        Log.d("fail",e.printStackTrace().toString())
+//
+//                    }
+//                })
+
 
             }
         }

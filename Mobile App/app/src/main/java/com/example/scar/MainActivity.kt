@@ -1,8 +1,11 @@
 package com.example.scar
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -43,7 +46,15 @@ import androidx.compose.ui.unit.sp
 import com.example.scar.ui.theme.SCARTheme
 import com.example.scar.ui.theme.SCARTheme
 import com.example.scar.ui.theme.cardBg
+import com.example.scar.ui.theme.createJson
 import com.example.scar.ui.theme.mainBg
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import org.json.JSONArray
+import java.io.IOException
 
 
 class MainActivity  : ComponentActivity() {
@@ -51,185 +62,42 @@ class MainActivity  : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             SCARTheme {
+
+                Log.d("JSON", createJson().toString())
                 // A surface container using the 'background' color from the theme
-                leaderboard()
+                Navigation()
+
+//                val client = OkHttpClient()
 //
-//                val url = "http://192.168.1.5:5000//match/1"  // Replace with your actual URL
+//                val url = "https://demo5970075.mockable.io/user" // Replace with your HTTP URL
 //
-//                // Create a request queue
-//                val requestQueue = Volley.newRequestQueue(this)
+//                val request = Request.Builder()
+//                    .url(url)
+//                    .build()
 //
-//                // Create a GET request
-//                val jsonObjectRequest = JsonObjectRequest(
-//                    Request.Method.GET, url, null,
-//                    Response.Listener { response ->
-//                        // Handle the JSON response
-//                        val message = response.getString("message")
-//                        Log.d("JSON","$message")
-//                    },
-//                    Response.ErrorListener { error ->
-//                        // Handle errors here
-//                        Log.d("ada:", "Error: ${error.message}")
+//                client.newCall(request).enqueue(object : Callback {
+//                    override fun onResponse(call: Call, response: Response) {
+//                        if (response.isSuccessful) {
+//                            val responseBody = response.body()?.string()
+//                            println(responseBody)
+//                            Log.d("success",responseBody.toString())
+//
+//                        } else {
+//                            println("Request failed with code: ${response.code()}")
+//                            Log.d("fail",response.code().toString())
+//                        }
 //                    }
-//                )
 //
-//                // Add the request to the request queue
-//                requestQueue.add(jsonObjectRequest)
+//                    override fun onFailure(call: Call, e: IOException) {
+//                        e.printStackTrace()
+//                        Log.d("fail",e.printStackTrace().toString())
+//
+//                    }
+//                })
+
 
             }
         }
     }
-}
-data class LeaderboardEntry(val name: String, val score: Int)
 
-@Composable
-fun leaderboard(modifier: Modifier = Modifier){
-    Surface(modifier = Modifier.fillMaxSize(),
-        color = mainBg// Set the desired background color here
-    ) {
-        Column {
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Button(
-                    onClick = {
-                        // Handle button click for the first button
-                    },
-                    shape = RectangleShape,
-                    colors = ButtonDefaults.buttonColors(
-                        cardBg.copy(alpha = 0.6f)
-                    ),
-                    modifier = Modifier
-                        .size(150.dp)
-                        .padding(15.dp)
-                        .clip(shape = RoundedCornerShape(6.dp))
-                        .border(3.dp, Color.White)
-                )
-                {
-                    Text(
-                        text = "Regional",
-                        style = TextStyle(color = Color.White)
-                    )
-                }
-                Button(
-                    onClick = {
-                        // Handle button click for the first button
-                    },
-                    shape = RectangleShape,
-                    colors = ButtonDefaults.buttonColors(
-                        cardBg.copy(alpha = 0.6f)
-                    ),
-                    modifier = Modifier
-                        .size(150.dp)
-                        .padding(15.dp)
-                        .clip(shape = RoundedCornerShape(6.dp))
-                )
-                {
-                    Text(text = "World")
-                }
-            }
-            Row {
-                LeaderboardUI()
-            }
-
-        }
-    }
-}
-
-@Composable
-fun LeaderboardScreen(leaderboardData: List<LeaderboardEntry>) {
-    var searchText by remember { mutableStateOf("") }
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .clip(shape = RoundedCornerShape(8.dp))
-            .background(cardBg.copy(alpha = 0.6f))
-
-        ,
-        horizontalAlignment = Alignment.CenterHorizontally,
-
-        ) {
-        Text(
-            text = "LEADERBOARDS",
-            style = TextStyle(color= Color.White, fontSize = 20.sp),
-        )
-
-
-        // Leaderboard entries
-        LazyColumn {
-            itemsIndexed(leaderboardData.filter {
-                it.name.contains(
-                    searchText,
-                    ignoreCase = true
-                )
-            }) { index, entry ->
-                LeaderboardItem(entry = entry, isGold = index < 3)
-            }
-        }
-        Spacer(modifier = Modifier.height(90.dp))
-        Row(){
-            LeaderboardItem(entry = LeaderboardEntry("player",123), isGold = false)
-
-        }
-
-    }
-
-
-}
-
-@SuppressLint("SuspiciousIndentation")
-@Composable
-fun LeaderboardItem(entry: LeaderboardEntry, isGold: Boolean) {
-    val backgroundColor = if (isGold) Color(0xFFFFD700) else Color.White  // Use gold color for the first three items
-    ElevatedCard (
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .clip(RoundedCornerShape(8)),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 8.dp
-        ),
-        colors = CardDefaults.cardColors(containerColor = backgroundColor)
-
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(text = entry.name, style = MaterialTheme.typography.bodyMedium)
-            Text(text = entry.score.toString(), style = MaterialTheme.typography.bodyMedium)
-        }
-
-    }
-
-}
-
-@Composable
-fun LeaderboardUI() {
-    val leaderboardData = remember {
-        listOf(
-            LeaderboardEntry("User 1", 500),
-            LeaderboardEntry("User 2", 750),
-            LeaderboardEntry("User 3", 600),
-            LeaderboardEntry("User 4", 900),
-            LeaderboardEntry("User 5", 800),
-            LeaderboardEntry("User 6", 700),
-            LeaderboardEntry("User 7", 550),
-        )
-    }
-
-    LeaderboardScreen(leaderboardData = leaderboardData)
-}
-
-
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true,
-    name = "Dark Mode")
-@Composable
-fun GreetingPreview() {
-    leaderboard()
 }

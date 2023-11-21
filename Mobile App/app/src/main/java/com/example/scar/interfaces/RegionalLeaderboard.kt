@@ -1,8 +1,7 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.example.scar.ui.theme
+package com.example.scar.interfaces
 
-import androidx.fragment.app.activityViewModels
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.*
@@ -32,12 +31,15 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.scar.R
-import com.example.scar.network.Api
 import com.example.scar.screens.LeaderboardViewModel
+import com.example.scar.ui.theme.Leaderboard
+import com.example.scar.ui.theme.cardBg
+import com.example.scar.ui.theme.createJson
+import com.example.scar.ui.theme.mainBg
+import com.example.scar.ui.theme.userBg
 import kotlinx.serialization.*
 import kotlin.math.max
 import kotlin.math.min

@@ -54,21 +54,21 @@ import com.example.scar.ui.theme.Leaderboard
 import com.example.scar.ui.theme.Screen
 import com.example.scar.ui.theme.cardBg
 import com.example.scar.ui.theme.leaderboard
+//import com.example.scar.ui.theme.login
 import com.example.scar.ui.theme.mainBg
+import com.whitebatcodes.myloginapplication.interfaces.LoginForm
 
 
-
-
-enum class LeaderboardScreen() {
-    Regional,
-    World
-}
+//enum class LeaderboardScreen() {
+//    Regional,
+//    World
+//}
 
 @Composable
 fun Navigation()
 {
     val navController  = rememberNavController()
-    NavHost(navController = navController, startDestination = Leaderboard.World.route)
+    NavHost(navController = navController, startDestination = Screen.LogIn.route)
     {
         composable(route = Leaderboard.World.route)
         {
@@ -77,42 +77,46 @@ fun Navigation()
         composable(route = Leaderboard.Regional.route){
             leaderboard(navController = navController,region="ireland")
         }
-
-    }
-
-}
-
-
-@Composable
-fun MainScreen(navController: NavController) {
-    var text by remember {
-        mutableStateOf(" ")
-    }
-    Column(verticalArrangement = Arrangement.Center,
-    modifier= Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 50.dp)) {
-        TextField(
-            value = text,
-            onValueChange ={
-                text = it
-        },
-            modifier = Modifier.fillMaxWidth())
-        Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = {navController.navigate(Screen.DetailScreen.withArgs(text)) },
-            modifier= Modifier.align(Alignment.End))
-            {
-            Text(text = "to DetailScreen")
+        composable(route = Screen.LogIn.route){
+//            leaderboard(navController = navController,region="ireland")
+            LoginForm()
         }
 
     }
+
 }
 
-@Composable
-fun DetailScreen(name:String?)
-{
-    Box(contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()){
-        Text(text="Hello, $name")
-    }
-}
+
+//@Composable
+//fun MainScreen(navController: NavController) {
+//    var text by remember {
+//        mutableStateOf(" ")
+//    }
+//    Column(verticalArrangement = Arrangement.Center,
+//    modifier= Modifier
+//        .fillMaxWidth()
+//        .padding(horizontal = 50.dp)) {
+//        TextField(
+//            value = text,
+//            onValueChange ={
+//                text = it
+//        },
+//            modifier = Modifier.fillMaxWidth())
+//        Spacer(modifier = Modifier.height(8.dp))
+//        Button(onClick = {navController.navigate(Screen.DetailScreen.withArgs(text)) },
+//            modifier= Modifier.align(Alignment.End))
+//            {
+//            Text(text = "to DetailScreen")
+//        }
+//
+//    }
+//}
+//
+//@Composable
+//fun DetailScreen(name:String?)
+//{
+//    Box(contentAlignment = Alignment.Center,
+//        modifier = Modifier.fillMaxSize()){
+//        Text(text="Hello, $name")
+//    }
+//}

@@ -36,6 +36,7 @@ import androidx.navigation.NavController
 import com.example.scar.R
 import com.example.scar.screens.LeaderboardViewModel
 import com.example.scar.ui.theme.Leaderboard
+import com.example.scar.ui.theme.Screen
 import com.example.scar.ui.theme.cardBg
 import com.example.scar.ui.theme.createJson
 import com.example.scar.ui.theme.mainBg
@@ -63,7 +64,7 @@ fun leaderboard(modifier: Modifier = Modifier, navController: NavController, reg
                 horizontalArrangement = Arrangement.Start
             ) {
                 Button(
-                    onClick = {  },
+                    onClick = { navController.navigate(Screen.MainScreen.route) },
                     modifier = Modifier
                         .padding(8.dp)
                         .size(70.dp),
@@ -368,7 +369,7 @@ fun LeaderboardItem(entry: LeaderboardEntry, isGold: Boolean, index:Int) {
 fun LeaderboardUI() {
 //    val viewModel:LeaderboardViewModel = viewModel()
 //    val vm = viewModel<LeaderboardViewModel>()
-    val leaderboardViewModel: LeaderboardViewModel = viewModel()
+//    val leaderboardViewModel: LeaderboardViewModel = viewModel()
 
 
 

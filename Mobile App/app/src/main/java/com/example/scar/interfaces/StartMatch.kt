@@ -38,6 +38,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.scar.R
 import com.example.scar.ui.theme.cardBg
@@ -48,23 +49,7 @@ import com.example.scar.ui.theme.textBg
 //sources
 ///https://stackoverflow.com/questions/72794300/is-there-a-way-to-filter-the-exposed-dropdown-menu-options-depending-on-the-valu/72795638#72795638
 @Composable
-fun Startmatch() {
-    val list = listOf("SelectionA", "SelectionB", "SelectionC")
-    val subListA = listOf("SubA1", "SubA2", "SubA3")
-    val subListB = listOf("SubB1", "SubB2", "SubB3")
-    val subListC = listOf("SubC1", "SubC2", "SubC3")
-
-
-    var mainSelection by remember { mutableIntStateOf(-1) }
-    var subSelection by remember { mutableIntStateOf(-1) }
-
-    val subList = remember(mainSelection) {
-        when (mainSelection) {
-            1 -> subListB
-            2 -> subListC
-            else -> subListA
-        }
-    }
+fun Startmatch(navController: NavController) {
     Surface(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(id = R.drawable.background),
@@ -246,7 +231,7 @@ fun Startmatch() {
     }
     Spacer(modifier = Modifier.height(40.dp))
 
-    BottomNavigationBar(navController = rememberNavController())
+    BottomNavigationBar(navController = navController)
 }
 
 

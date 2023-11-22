@@ -25,7 +25,7 @@ import com.whitebatcodes.myloginapplication.interfaces.LoginForm
 fun Navigation()
 {
     val navController  = rememberNavController()
-    NavHost(navController = navController, startDestination = Screen.StartMatch.route)
+    NavHost(navController = navController, startDestination = Screen.MainScreen.route)
     {
         composable(route = Leaderboard.World.route)
         {
@@ -40,11 +40,11 @@ fun Navigation()
         }
         composable(route = Screen.MainScreen.route){
 //            leaderboard(navController = navController,region="ireland")
-            MainMenu()
+            MainMenu(navController = navController)
         }
         composable(route = Screen.StartMatch.route){
 //            leaderboard(navController = navController,region="ireland")
-            Startmatch()
+            Startmatch(navController = navController)
         }
 
     }

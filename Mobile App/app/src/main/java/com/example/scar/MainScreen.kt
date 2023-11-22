@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.scar.interfaces.MainMenu
+import com.example.scar.interfaces.Startmatch
 import com.example.scar.ui.theme.Leaderboard
 import com.example.scar.ui.theme.Screen
 import com.example.scar.interfaces.leaderboard
@@ -24,7 +25,7 @@ import com.whitebatcodes.myloginapplication.interfaces.LoginForm
 fun Navigation()
 {
     val navController  = rememberNavController()
-    NavHost(navController = navController, startDestination = Screen.MainScreen.route)
+    NavHost(navController = navController, startDestination = Screen.StartMatch.route)
     {
         composable(route = Leaderboard.World.route)
         {
@@ -40,6 +41,10 @@ fun Navigation()
         composable(route = Screen.MainScreen.route){
 //            leaderboard(navController = navController,region="ireland")
             MainMenu()
+        }
+        composable(route = Screen.StartMatch.route){
+//            leaderboard(navController = navController,region="ireland")
+            Startmatch()
         }
 
     }

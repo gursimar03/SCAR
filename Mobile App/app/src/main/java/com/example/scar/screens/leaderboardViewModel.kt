@@ -66,9 +66,10 @@ class LeaderboardViewModel : ViewModel() {
 //                    leaderboardData = newData
 //                }
             } catch (e: IOException) {
-                Log.d("error", "error")
+                Log.e("error", "IOException: ${e.message}", e)
             } catch (e: HttpException) {
-                Log.d("error", "error")
+                Log.e("error", "IOException: ${e.message}", e)
+//                MarsUIState.Error
 
 //         LeaderboardUiState.Error
             }

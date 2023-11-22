@@ -4,6 +4,8 @@ sealed class Screen(val route:String){
     object LogIn : Screen("login_screen")
     object MainScreen : Screen("main_screen")
 
+    object StartMatch : Screen("startmatch_screen")
+
     fun withArgs(args:String): String{
         return buildString {
             append(route)

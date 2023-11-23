@@ -34,9 +34,12 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.scar.R
+import com.example.scar.screens.LeaderboardUiState
 import com.example.scar.screens.LeaderboardViewModel
 import com.example.scar.ui.theme.Leaderboard
 import com.example.scar.ui.theme.Screen
+import com.example.scar.ui.theme.User
+import com.example.scar.ui.theme.calculateScore
 import com.example.scar.ui.theme.cardBg
 import com.example.scar.ui.theme.createJson
 import com.example.scar.ui.theme.mainBg
@@ -139,7 +142,7 @@ fun leaderboard(modifier: Modifier = Modifier, navController: NavController, reg
                         Column(horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center) {
                             Text(
-                                text = "Regional",
+                                text = "World",
                                 style = TextStyle(color = Color.White),
                                 fontFamily = FontFamily(
                                     Font(R.font.montserrat_regular, weight = FontWeight.Normal)
@@ -147,7 +150,7 @@ fun leaderboard(modifier: Modifier = Modifier, navController: NavController, reg
                                 fontSize = 20.sp
                             )
                             Text(
-                                text = "34",
+                                text = "10,325",
                                 style = TextStyle(color = Color.White),
                                 fontFamily = FontFamily(
                                     Font(R.font.montserrat_regular, weight = FontWeight.Bold)
@@ -231,7 +234,9 @@ fun leaderboard(modifier: Modifier = Modifier, navController: NavController, reg
                     .height(385.dp) // Use weight to make this row take the remaining available space
             ) {
                 // Your LeaderboardUI content
-                LeaderboardUI()
+                val leaderboardViewModel: LeaderboardViewModel = viewModel()
+//                HomeScreen(marsUiState = marsViewModel.marsUiState)
+                LeaderboardUI(leaderboardUiState = leaderboardViewModel.leaderboardUiState)
             }
             Row(
                 modifier = Modifier
@@ -366,28 +371,75 @@ fun LeaderboardItem(entry: LeaderboardEntry, isGold: Boolean, index:Int) {
 }
 
 @Composable
-fun LeaderboardUI() {
-//    val viewModel:LeaderboardViewModel = viewModel()
-//    val vm = viewModel<LeaderboardViewModel>()
-//    val leaderboardViewModel: LeaderboardViewModel = viewModel()
+fun LeaderboardUI(leaderboardUiState: LeaderboardUiState) {
+
+    when (leaderboardUiState) {
+        is LeaderboardUiState.Loading -> Loading()
+        is LeaderboardUiState.Success ->
+           Success(leaderboardUiState.users)
 
 
-
-
-//    leaderboardViewModel.getUserInfo()
-//    Log.d("leaderboarddata",leaderboardViewModel.leaderboardData.toString())
-    val jsonArray = createJson();
-    for (i in 0 until jsonArray.length()) {
-        val item = jsonArray.getJSONObject(i)
-        Log.d("Item", item.toString())
-//        Log.d("id", item.getInt("user_id").toString())
-//        User.fromJsonObject(item)
-
-
-        // Your code here
+        is LeaderboardUiState.Error -> Loading()
+//        else -> {
+//            Loading()}
     }
-//    val peopleList = Json.decodeFromString<List<com.example.scar.ui.theme.User>>(jsonArray)
-//    Log.d("USER", peopleList.toString())
+//    val leaderboardViewModel: LeaderboardViewModel = viewModel()
+//
+//    val userInfoList = leaderboardViewModel.leaderboardData
+//    Log.d("userInfoList",userInfoList.toString())
+//
+//
+//    val leaderEntryList:List<LeaderboardEntry> = userInfoList.map {
+//        LeaderboardEntry(it.username, calculateScore(it.kills, it.spots, it.accuracy, it.travelled))
+//    }
+//
+//    val leaderboardData = remember {
+//        leaderEntryList
+//
+//    }
+//
+//    Log.d("leaderEntryList",leaderEntryList.toString())
+//
+//
+//
+//
+//    LeaderboardScreen(leaderboardData = leaderboardData)
+}
+
+@Composable
+fun Success(userInfoList: List<User>){
+    val leaderboardViewModel: LeaderboardViewModel = viewModel()
+
+//    val userInfoList = leaderboardViewModel.leaderboardData
+    Log.d("userInfoList",userInfoList.toString())
+//    for (userInfo in userInfoList) {
+//        LeaderboardEntry(userInfo.username, calculateScore(userInfo.kills,userInfo.spots,userInfo.accuracy,userInfo.travelled))
+//    }
+
+    val leaderEntryList:List<LeaderboardEntry> = userInfoList.map {
+        LeaderboardEntry(it.username, calculateScore(it.kills, it.spots, it.accuracy, it.travelled))
+    }
+    val leaderboardData = remember {
+            leaderEntryList
+    }
+
+    Log.d("leaderEntryList",leaderEntryList.toString())
+
+    LeaderboardScreen(leaderboardData = leaderboardData)
+}
+@Composable
+fun Loading(){
+    val leaderboardViewModel: LeaderboardViewModel = viewModel()
+
+    val userInfoList = leaderboardViewModel.leaderboardData
+    Log.d("userInfoList",userInfoList.toString())
+//    for (userInfo in userInfoList) {
+//        LeaderboardEntry(userInfo.username, calculateScore(userInfo.kills,userInfo.spots,userInfo.accuracy,userInfo.travelled))
+//    }
+
+    val leaderEntryList:List<LeaderboardEntry> = userInfoList.map {
+        LeaderboardEntry(it.username, calculateScore(it.kills, it.spots, it.accuracy, it.travelled))
+    }
     val leaderboardData = remember {
         listOf(
             LeaderboardEntry("user 1", 500),
@@ -399,9 +451,11 @@ fun LeaderboardUI() {
             LeaderboardEntry("user 7", 550),
         )
     }
+    Log.d("leaderEntryList",leaderEntryList.toString())
 
     LeaderboardScreen(leaderboardData = leaderboardData)
 }
+
 
 //fun parseJsonArray(jsonArray: JSONArray): List<LeaderboardEntry> {
 //    val leaderboardData = mutableListOf<LeaderboardEntry>()

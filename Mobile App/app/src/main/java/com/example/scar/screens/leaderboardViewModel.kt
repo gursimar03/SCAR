@@ -34,16 +34,19 @@ import java.io.IOException
 /**
  * UI state for the Home screen
  */
-//sealed interface LeaderboardUiState {
-//    data class Success(val users: List<User>) : LeaderboardUiState
-//    object Error : LeaderboardUiState
-//    object Loading : LeaderboardUiState
-//}
+sealed interface LeaderboardUiState {
+    data class Success(val users: List<User>) : LeaderboardUiState
+    object Error : LeaderboardUiState
+    object Loading : LeaderboardUiState
+}
 
 class LeaderboardViewModel : ViewModel() {
     /** The mutable State that stores the status of the most recent request */
-//    var leaderboardData by mutableStateOf<List<User>>(emptyList())
+
+    var leaderboardData by mutableStateOf<List<User>>(emptyList())
 //        private set
+var leaderboardUiState: LeaderboardUiState by mutableStateOf(LeaderboardUiState.Loading)
+    private set
 
     /**
      * Call getMarsPhotos() on init so we can display status immediately.
@@ -58,20 +61,23 @@ class LeaderboardViewModel : ViewModel() {
      */
     fun getUserInfo() {
         viewModelScope.launch {
-//            marsUiState = MarsUiState.Loading
-            try {
+            leaderboardUiState = LeaderboardUiState.Loading
+            leaderboardUiState= try {
                 val newData = Api.retrofitService.getUsers()
 //                Log.d("newData", newData.toString())
+                LeaderboardUiState.Success(
+                    newData
+                )
 //                withContext(Dispatchers.Main) {
 //                    leaderboardData = newData
 //                }
             } catch (e: IOException) {
-                Log.e("error", "IOException: ${e.message}", e)
+//                Log.e("error", "IOException: ${e.message}", e)
+                LeaderboardUiState.Error
             } catch (e: HttpException) {
-                Log.e("error", "IOException: ${e.message}", e)
-//                MarsUIState.Error
+//                Log.e("error", "IOException: ${e.message}", e)
+                LeaderboardUiState.Error
 
-//         LeaderboardUiState.Error
             }
         }
     }

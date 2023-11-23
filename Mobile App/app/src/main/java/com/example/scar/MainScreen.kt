@@ -25,7 +25,7 @@ import com.whitebatcodes.myloginapplication.interfaces.LoginForm
 fun Navigation()
 {
     val navController  = rememberNavController()
-    NavHost(navController = navController, startDestination = Screen.MainScreen.route)
+    NavHost(navController = navController, startDestination = Leaderboard.World.route)
     {
         composable(route = Leaderboard.World.route)
         {

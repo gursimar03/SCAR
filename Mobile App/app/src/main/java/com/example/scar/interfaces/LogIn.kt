@@ -53,8 +53,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.scar.MainActivity
 import com.example.scar.R
+import com.example.scar.ui.theme.Leaderboard
+import com.example.scar.ui.theme.Screen
 import com.example.scar.ui.theme.cardBg
 import com.example.scar.ui.theme.mainBg
 
@@ -62,7 +65,7 @@ import com.example.scar.ui.theme.mainBg
 //import com.whitebatcodes.myloginapplication.ui.theme.MyLoginApplicationTheme
 
 @Composable
-fun LoginForm() {
+fun LoginForm(navController: NavController) {
 
     Surface(modifier = Modifier.fillMaxSize(),
         color = mainBg // Set the desired background color here
@@ -120,7 +123,7 @@ fun LoginForm() {
                 Spacer(modifier = Modifier.height(60.dp))
                 Button(
                     onClick = {
-                        if (!checkCredentials(credentials, context)) credentials = Credentials()
+                        navController.navigate(Screen.MainScreen.route)
                     },
                     enabled = credentials.isNotEmpty(),
                     shape = RoundedCornerShape(5.dp),

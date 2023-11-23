@@ -41,7 +41,6 @@ import com.example.scar.ui.theme.Screen
 import com.example.scar.ui.theme.User
 import com.example.scar.ui.theme.calculateScore
 import com.example.scar.ui.theme.cardBg
-import com.example.scar.ui.theme.createJson
 import com.example.scar.ui.theme.mainBg
 import com.example.scar.ui.theme.userBg
 import kotlinx.serialization.*

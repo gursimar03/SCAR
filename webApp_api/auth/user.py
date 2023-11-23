@@ -39,11 +39,11 @@ def register_user():
 @user_bp.route('/api/login', methods=['POST'])
 def login_user():
     data = request.json
-    email = data.get('email')
+    email_address = data.get('email')
     password = data.get('password')
 
     # Query the user by email
-    user = User.query.filter_by(email=email).first()
+    user = User.query.filter_by(email_address=email_address).first()
 
     if user is None:
         return jsonify({'success': False, 'message': 'User not found'}), 404
@@ -56,7 +56,7 @@ def login_user():
     return jsonify({
         'success': True,
         'user_id': user.user_id,
-        'email': user.email,
+        'email': user.email_address,
         'username': user.username
     }), 200
 

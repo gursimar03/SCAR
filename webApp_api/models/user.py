@@ -1,6 +1,9 @@
 # models/user.py
-
 from app_factory import db
+from models.session import Session
+from models.leaderboard import Leaderboard
+from models.match_result import MatchResult
+from models.inventory import Inventory
 
 class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -11,7 +14,7 @@ class User(db.Model):
     access_level = db.Column(db.Integer, default=0)
 
     # Relationships
-    sessions = db.relationship('models.session.Session', backref='user', lazy=True)
-    leaderboard = db.relationship('models.leaderboard.Leaderboard', backref='user', lazy=True)
-    inventory = db.relationship('models.inventory.Inventory', backref='user', lazy=True)
-    match_results = db.relationship('models.match_result.MatchResult', backref='user', lazy=True)
+    sessions = db.relationship('Session', backref='user', lazy=True)
+    leaderboard = db.relationship('Leaderboard', backref='user', lazy=True)
+    inventory = db.relationship('Inventory', backref='user', lazy=True)
+    match_results = db.relationship('MatchResult', backref='user', lazy=True)

@@ -1,5 +1,3 @@
-#
-
 from app_factory import db
 
 class Arena(db.Model):

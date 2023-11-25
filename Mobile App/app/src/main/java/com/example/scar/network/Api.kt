@@ -23,6 +23,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 private const val BASE_URL =
     "https://demo5970075.mockable.io"
@@ -41,6 +42,9 @@ private val retrofit = Retrofit.Builder()
 interface ApiService{
     @GET("user")
     suspend fun getUsers(): List<User>
+
+    @POST("Highlight")
+    suspend fun createPost(): List<User>
 }
 
 /**

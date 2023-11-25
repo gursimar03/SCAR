@@ -63,6 +63,7 @@ def login_user():
 @user_bp.route('/api/test')
 def test():
     # Use the 'connector' here for database operations
+    # setup_pubnub()
     return jsonify({'success': True}), 200
 
 # Note: The verification function needs to be defined in this file or imported from where it is defined.

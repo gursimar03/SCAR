@@ -1,8 +1,8 @@
 from flask import Blueprint, jsonify, request
-from app_factory import db
+from SCAR.app_factory import db
+from SCAR.models.user import User
+from SCAR.models.session import Session
 from flask_bcrypt import Bcrypt
-from models.user import User
-from models.session import Session
 
 bcrypt = Bcrypt()
 

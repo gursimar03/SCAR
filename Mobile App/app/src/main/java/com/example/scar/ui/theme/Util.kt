@@ -73,3 +73,13 @@ fun createJson(): JSONArray {
     }
     return jsonArray
 }
+
+ fun calculateScore(kills: Int, spots: Int, accuracy: Int, travelled: Int): Int {
+    // Your scoring logic here (adjust as needed)
+    val killsWeight = 20
+    val spotsWeight = 10
+    val accuracyWeight = 30
+    val travelledWeight = 0.5
+
+    return (kills * killsWeight + spots * spotsWeight + (accuracy * 100).toInt() * accuracyWeight - (travelled / 100).toInt() * travelledWeight).toInt()
+}

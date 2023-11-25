@@ -25,7 +25,7 @@ import retrofit2.Retrofit
 import retrofit2.http.GET
 
 private const val BASE_URL =
-    "https://demo5970075.mockable.io"
+    "https://demo5970075.mockable.io/"
 
 /**
  * Use the Retrofit builder to build a retrofit object using a kotlinx.serialization converter

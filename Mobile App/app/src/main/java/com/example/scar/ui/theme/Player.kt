@@ -5,4 +5,4 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Player(@SerialName(value = "leaderboard_id") val leaderboardID: Int,
-                   @SerialName(value = "user_id") val userID: Int)
+                  @SerialName(value = "user_id") val userID: Int)

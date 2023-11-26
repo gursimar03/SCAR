@@ -24,6 +24,7 @@ import androidx.lifecycle.viewModelScope
 //import com.example.marsphotos.model.MarsPhoto
 //import com.example.marsphotos.network.MarsApi
 import com.example.scar.network.Api
+import com.example.scar.ui.theme.Data
 import com.example.scar.ui.theme.Player
 import com.example.scar.ui.theme.User
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +37,7 @@ import java.io.IOException
  * UI state for the Home screen
  */
 sealed interface PlayerUiState {
-    data class Success(val users: List<Player>) : PlayerUiState
+    data class Success(val users: Data) : PlayerUiState
     object Error : PlayerUiState
     object Loading : PlayerUiState
 }
@@ -63,21 +64,15 @@ class PlayerViewModel : ViewModel() {
     fun getUserInfo() {
         viewModelScope.launch {
             playerUiState = PlayerUiState.Loading
-            PlayerUiState= try {
+            playerUiState= try {
                 val newData = Api.retrofitService.getPlayers()
-//                Log.d("newData", newData.toString())
-                LeaderboardUiState.Success(
+                PlayerUiState.Success(
                     newData
                 )
-//                withContext(Dispatchers.Main) {
-//                    leaderboardData = newData
-//                }
             } catch (e: IOException) {
-//                Log.e("error", "IOException: ${e.message}", e)
-                LeaderboardUiState.Error
+                PlayerUiState.Error
             } catch (e: HttpException) {
-//                Log.e("error", "IOException: ${e.message}", e)
-                LeaderboardUiState.Error
+                PlayerUiState.Error
 
             }
         }

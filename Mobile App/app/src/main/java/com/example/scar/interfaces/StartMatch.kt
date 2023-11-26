@@ -1,6 +1,5 @@
 package com.example.scar.interfaces
 
-import Success
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -41,12 +40,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.scar.R
-import com.example.scar.screens.LeaderboardUiState
-import com.example.scar.screens.LeaderboardViewModel
-import com.example.scar.screens.SuccessUiState
+import com.example.scar.screens.PlayerUiState
+import com.example.scar.screens.PlayerViewModel
 import com.example.scar.screens.SuccessViewModel
-import com.example.scar.ui.theme.User
-import com.example.scar.ui.theme.calculateScore
+import com.example.scar.ui.theme.Data
 import com.example.scar.ui.theme.cardBg2
 import com.example.scar.ui.theme.creme
 import com.example.scar.ui.theme.textBg
@@ -214,11 +211,11 @@ fun Startmatch(navController: NavController) {
                     }
 
                   Spacer(modifier = Modifier.height(35.dp))
-                    val successViewModel: SuccessViewModel = viewModel()
+                    val playerViewModel: PlayerViewModel = viewModel()
                     Button(
                         modifier = Modifier.width(300.dp),
                         onClick = {
-                            TestUI(successUiState = successViewModel.successUiState)
+                            TestUI(playerUiState = playerViewModel.playerUiState)
                                   },
                         shape = RoundedCornerShape(10.dp),
                         colors = ButtonDefaults.buttonColors(
@@ -259,22 +256,22 @@ fun SwitchMinimalExample() {
 }
 
 
-fun TestUI(successUiState: SuccessUiState) {
+fun TestUI(playerUiState: PlayerUiState) {
 
-    when (successUiState) {
-        is SuccessUiState.Loading -> Loading2()
-        is SuccessUiState.Succeed ->
-            Succeed(successUiState.results)
+    when (playerUiState) {
+        is PlayerUiState.Loading -> Loading2()
+        is PlayerUiState.Success->
+            Succeed(playerUiState.users)
 
 
-        is SuccessUiState.Error -> Loading2()
+        is PlayerUiState.Error -> Loading2()
         else -> {
             Loading2()
         }
     }
 }
 
-fun Succeed(testList:Success){
+fun Succeed(testList: Data){
     Log.d("Success",testList.toString())
 
 }

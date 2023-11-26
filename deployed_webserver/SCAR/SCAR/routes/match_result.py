@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
-from app_factory import db
-from models import MatchResult
+from SCAR.app_factory import db
+from SCAR.models import match_result
 
 match_result_bp = Blueprint('match_result_bp', __name__)
 

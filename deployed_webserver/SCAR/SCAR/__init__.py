@@ -1,7 +1,12 @@
 from flask import render_template , jsonify
-from app_factory import create_app
-from auth.user import user_bp
-from routes import leaderboard_bp, arena_bp, inventory_bp, match_result_bp, weapon_bp
+from SCAR.app_factory import create_app
+from SCAR.auth.user import user_bp
+from SCAR.routes.arena import arena_bp
+from SCAR.routes.inventory import inventory_bp
+from SCAR.routes.match_result import match_result_bp
+from SCAR.routes.leaderboard import leaderboard_bp
+from SCAR.routes.weapon import weapon_bp
+
 import os 
 
 app, db = create_app()
@@ -25,4 +30,4 @@ def index():
 
 if __name__ == '__main__':
     # Register the blueprints after setting the connector
-    app.run(debug=True)
+    app.run()

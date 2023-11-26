@@ -1,4 +1,4 @@
-from app_factory import db
+from SCAR.app_factory import db
 
 class Arena(db.Model):
     arena_id = db.Column(db.Integer, primary_key=True, autoincrement=True)

@@ -6,6 +6,7 @@ from SCAR.routes.inventory import inventory_bp
 from SCAR.routes.match_result import match_result_bp
 from SCAR.routes.leaderboard import leaderboard_bp
 from SCAR.routes.weapon import weapon_bp
+from SCAR.routes.pn_routes import pb_route
 
 import os 
 
@@ -18,6 +19,8 @@ app.register_blueprint(arena_bp)
 app.register_blueprint(inventory_bp)
 app.register_blueprint(match_result_bp)
 app.register_blueprint(weapon_bp)
+app.register_blueprint(pb_route)
+
 
 def access_token_verify(access_token):
     verifier = os.environ.get('access_token')

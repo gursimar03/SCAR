@@ -36,7 +36,10 @@ import androidx.navigation.NavController
 import com.example.scar.R
 import com.example.scar.screens.LeaderboardUiState
 import com.example.scar.screens.LeaderboardViewModel
+import com.example.scar.screens.PlayerUiState
+import com.example.scar.screens.PlayerViewModel
 import com.example.scar.ui.theme.Leaderboard
+import com.example.scar.ui.theme.Player
 import com.example.scar.ui.theme.Screen
 import com.example.scar.ui.theme.User
 import com.example.scar.ui.theme.calculateScore
@@ -234,8 +237,9 @@ fun leaderboard(modifier: Modifier = Modifier, navController: NavController, reg
             ) {
                 // Your LeaderboardUI content
                 val leaderboardViewModel: LeaderboardViewModel = viewModel()
-//                HomeScreen(marsUiState = marsViewModel.marsUiState)
                 LeaderboardUI(leaderboardUiState = leaderboardViewModel.leaderboardUiState)
+//                val playerViewModel: PlayerViewModel = viewModel()
+//                LeaderboardUI(playerUiState = playerViewModel.playerUiState)
             }
             Row(
                 modifier = Modifier
@@ -368,6 +372,42 @@ fun LeaderboardItem(entry: LeaderboardEntry, isGold: Boolean, index:Int) {
         }
     }
 }
+//
+//@Composable
+//fun LeaderboardUI(playerUiState: PlayerUiState) {
+//
+//    when (playerUiState) {
+//        is PlayerUiState.Loading -> Loading()
+//        is PlayerUiState.Success ->
+//           Success(playerUiState.users)
+//
+//
+//        is PlayerUiState.Error -> Loading()
+//        else -> {
+//            Loading()}
+//    }
+//}
+//
+//@Composable
+//fun Success(userInfoList: List<Player>){
+//    val leaderboardViewModel: LeaderboardViewModel = viewModel()
+//
+//    Log.d("userInfoList",userInfoList.toString())
+//
+//
+//    val leaderEntryList:List<LeaderboardEntry> = userInfoList.map {
+//        LeaderboardEntry(it.leaderboardID.toString(),it.userID)
+//    }
+//    val leaderboardData = remember {
+//            leaderEntryList
+//    }
+//
+//    Log.d("leaderEntryList",leaderEntryList.toString())
+//
+//    LeaderboardScreen(leaderboardData = leaderboardData)
+//}
+
+
 
 @Composable
 fun LeaderboardUI(leaderboardUiState: LeaderboardUiState) {
@@ -379,41 +419,17 @@ fun LeaderboardUI(leaderboardUiState: LeaderboardUiState) {
 
 
         is LeaderboardUiState.Error -> Loading()
-//        else -> {
-//            Loading()}
+        else -> {
+            Loading()}
     }
-//    val leaderboardViewModel: LeaderboardViewModel = viewModel()
-//
-//    val userInfoList = leaderboardViewModel.leaderboardData
-//    Log.d("userInfoList",userInfoList.toString())
-//
-//
-//    val leaderEntryList:List<LeaderboardEntry> = userInfoList.map {
-//        LeaderboardEntry(it.username, calculateScore(it.kills, it.spots, it.accuracy, it.travelled))
-//    }
-//
-//    val leaderboardData = remember {
-//        leaderEntryList
-//
-//    }
-//
-//    Log.d("leaderEntryList",leaderEntryList.toString())
-//
-//
-//
-//
-//    LeaderboardScreen(leaderboardData = leaderboardData)
 }
 
 @Composable
 fun Success(userInfoList: List<User>){
     val leaderboardViewModel: LeaderboardViewModel = viewModel()
 
-//    val userInfoList = leaderboardViewModel.leaderboardData
     Log.d("userInfoList",userInfoList.toString())
-//    for (userInfo in userInfoList) {
-//        LeaderboardEntry(userInfo.username, calculateScore(userInfo.kills,userInfo.spots,userInfo.accuracy,userInfo.travelled))
-//    }
+
 
     val leaderEntryList:List<LeaderboardEntry> = userInfoList.map {
         LeaderboardEntry(it.username, calculateScore(it.kills, it.spots, it.accuracy, it.travelled))
@@ -428,17 +444,12 @@ fun Success(userInfoList: List<User>){
 }
 @Composable
 fun Loading(){
-    val leaderboardViewModel: LeaderboardViewModel = viewModel()
+//    val leaderboardViewModel: LeaderboardViewModel = viewModel()
 
-    val userInfoList = leaderboardViewModel.leaderboardData
-    Log.d("userInfoList",userInfoList.toString())
-//    for (userInfo in userInfoList) {
-//        LeaderboardEntry(userInfo.username, calculateScore(userInfo.kills,userInfo.spots,userInfo.accuracy,userInfo.travelled))
-//    }
+//    val userInfoList = leaderboardViewModel.leaderboardData
+//    Log.d("userInfoList",userInfoList.toString())
 
-    val leaderEntryList:List<LeaderboardEntry> = userInfoList.map {
-        LeaderboardEntry(it.username, calculateScore(it.kills, it.spots, it.accuracy, it.travelled))
-    }
+//    val leaderEntryList:List<LeaderboardEntry>
     val leaderboardData = remember {
         listOf(
             LeaderboardEntry("user 1", 500),
@@ -450,26 +461,13 @@ fun Loading(){
             LeaderboardEntry("user 7", 550),
         )
     }
-    Log.d("leaderEntryList",leaderEntryList.toString())
+//    Log.d("leaderEntryList",leaderEntryList.toString())
 
     LeaderboardScreen(leaderboardData = leaderboardData)
 }
 
 
-//fun parseJsonArray(jsonArray: JSONArray): List<LeaderboardEntry> {
-//    val leaderboardData = mutableListOf<LeaderboardEntry>()
-//
-//    for (i in 0 until jsonArray.length()) {
-//        val jsonObject: JSONObject = jsonArray.getJSONObject(i)
-//        val username = jsonObject.getString("username")
-//        val score = jsonObject.getInt("score") // Adjust this based on your JSON structure
-//
-//        val entry = LeaderboardEntry(username, score)
-//        leaderboardData.add(entry)
-//    }
-//
-//    return leaderboardData
-//}
+
 
 
 

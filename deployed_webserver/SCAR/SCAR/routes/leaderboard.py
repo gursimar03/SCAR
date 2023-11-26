@@ -7,7 +7,7 @@ leaderboard_bp = Blueprint('leaderboard_bp', __name__)
 @leaderboard_bp.route('/api/leaderboard', methods=['GET'])
 def get_leaderboard():
     try:
-        leaderboard_data = Leaderboard.query.order_by(Leaderboard.elo.desc()).all()
+        leaderboard_data = Leaderboard.query.all()
         data = [{'leaderboard_id': entry.leaderboard_id, 'user_id': entry.user_id} for entry in leaderboard_data]
         return jsonify({'success': True, 'data': data}), 200
 

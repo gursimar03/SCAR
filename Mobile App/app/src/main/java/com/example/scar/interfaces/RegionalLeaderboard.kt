@@ -379,8 +379,8 @@ fun LeaderboardUI(leaderboardUiState: LeaderboardUiState) {
 
 
         is LeaderboardUiState.Error -> Loading()
-//        else -> {
-//            Loading()}
+        else -> {
+            Loading()}
     }
 //    val leaderboardViewModel: LeaderboardViewModel = viewModel()
 //

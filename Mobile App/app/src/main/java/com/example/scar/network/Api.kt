@@ -16,6 +16,8 @@ package com.example.scar.network
  * limitations under the License.
  */
 
+import Success
+import com.example.scar.screens.LeaderboardUiState
 import com.example.scar.ui.theme.User
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -25,7 +27,7 @@ import retrofit2.Retrofit
 import retrofit2.http.GET
 
 private const val BASE_URL =
-    "https://demo5970075.mockable.io/"
+    "https://scarsd3b.online/"
 
 /**
  * Use the Retrofit builder to build a retrofit object using a kotlinx.serialization converter
@@ -41,6 +43,9 @@ private val retrofit = Retrofit.Builder()
 interface ApiService{
     @GET("user")
     suspend fun getUsers(): List<User>
+
+    @GET("api/get/testing")
+    suspend fun getTests(): Success
 }
 
 /**

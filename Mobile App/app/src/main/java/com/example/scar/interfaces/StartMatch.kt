@@ -1,5 +1,7 @@
 package com.example.scar.interfaces
 
+import Success
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,8 +38,15 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.scar.R
+import com.example.scar.screens.LeaderboardUiState
+import com.example.scar.screens.LeaderboardViewModel
+import com.example.scar.screens.SuccessUiState
+import com.example.scar.screens.SuccessViewModel
+import com.example.scar.ui.theme.User
+import com.example.scar.ui.theme.calculateScore
 import com.example.scar.ui.theme.cardBg2
 import com.example.scar.ui.theme.creme
 import com.example.scar.ui.theme.textBg
@@ -205,10 +214,12 @@ fun Startmatch(navController: NavController) {
                     }
 
                   Spacer(modifier = Modifier.height(35.dp))
-
+                    val successViewModel: SuccessViewModel = viewModel()
                     Button(
                         modifier = Modifier.width(300.dp),
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            TestUI(successUiState = successViewModel.successUiState)
+                                  },
                         shape = RoundedCornerShape(10.dp),
                         colors = ButtonDefaults.buttonColors(
                             textBg
@@ -245,4 +256,29 @@ fun SwitchMinimalExample() {
             .width(150.dp)
             .padding(15.dp)
     )
+}
+
+
+fun TestUI(successUiState: SuccessUiState) {
+
+    when (successUiState) {
+        is SuccessUiState.Loading -> Loading2()
+        is SuccessUiState.Succeed ->
+            Succeed(successUiState.results)
+
+
+        is SuccessUiState.Error -> Loading2()
+        else -> {
+            Loading2()
+        }
+    }
+}
+
+fun Succeed(testList:Success){
+    Log.d("Success",testList.toString())
+
+}
+fun Loading2() {
+//    val successViewModel: SuccessViewModel = viewModel()
+    Log.d("NoJson", "failed")
 }

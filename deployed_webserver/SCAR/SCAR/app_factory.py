@@ -12,7 +12,7 @@ def create_app():
     load_dotenv()
 
     # Explicitly set SQLALCHEMY_DATABASE_URI
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:NEWPASSWORD@localhost/scar'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     # Create the SQLAlchemy object

@@ -18,6 +18,7 @@ package com.example.scar.network
 
 import Success
 import com.example.scar.screens.LeaderboardUiState
+import com.example.scar.ui.theme.Player
 import com.example.scar.ui.theme.User
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -46,6 +47,9 @@ interface ApiService{
 
     @GET("api/get/testing")
     suspend fun getTests(): Success
+
+    @GET("api/leaderboard")
+    suspend fun getPlayers(): List<Player>
 }
 
 /**

@@ -44,6 +44,7 @@ import com.example.scar.screens.PlayerUiState
 import com.example.scar.screens.PlayerViewModel
 import com.example.scar.screens.SuccessViewModel
 import com.example.scar.ui.theme.Data
+import com.example.scar.ui.theme.Player
 import com.example.scar.ui.theme.cardBg2
 import com.example.scar.ui.theme.creme
 import com.example.scar.ui.theme.textBg
@@ -273,6 +274,13 @@ fun TestUI(playerUiState: PlayerUiState) {
 
 fun Succeed(testList: Data){
     Log.d("Success",testList.toString())
+    val players: List<Player> = testList.players
+    Log.d("Players",players.toString())
+
+    // Print the player infor  mation
+    players.forEach { player ->
+        println("Leaderboard ID: ${player.leaderboardID}, User ID: ${player.userID}")
+    }
 
 }
 fun Loading2() {

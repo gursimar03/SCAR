@@ -28,8 +28,11 @@ import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.http.GET
 
+//private const val BASE_URL =
+//    "https://scarsd3b.online/
+
 private const val BASE_URL =
-    "https://scarsd3b.online/"
+    "https://demo5970075.mockable.io/"
 
 /**
  * Use the Retrofit builder to build a retrofit object using a kotlinx.serialization converter
@@ -49,7 +52,7 @@ interface ApiService{
     @GET("api/get/testing")
     suspend fun getTests(): Success
 
-    @GET("api/leaderboard")
+    @GET("leaderboard")
     suspend fun getPlayers(): Data
 }
 

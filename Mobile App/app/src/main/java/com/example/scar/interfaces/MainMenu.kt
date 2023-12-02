@@ -264,8 +264,8 @@ fun MainMenu(navController: NavController) {
 fun BottomNavigationBar(navController: NavController) {
     val items = listOf(
         NavigationItemBot.Home,
-        NavigationItemBot.Crosshair,
-        NavigationItemBot.Stats,
+//        NavigationItemBot.Crosshair,
+//        NavigationItemBot.Stats,
         NavigationItemBot.Leaderboard
     )
     var selectedItem by remember { mutableStateOf(0) }

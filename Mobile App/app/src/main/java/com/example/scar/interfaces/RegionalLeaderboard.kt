@@ -292,9 +292,6 @@ fun LeaderboardScreen(leaderboardData: List<LeaderboardEntry>) {
                 LeaderboardItem(entry = entry, isGold = index < 3, index)
             }
         }
-//        Spacer(modifier = Modifier.height(40.dp))
-
-
     }
 
 }

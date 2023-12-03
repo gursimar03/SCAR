@@ -106,7 +106,7 @@ fun LoginForm(navController: NavController) {
                         value = credentials.pwd,
                         onChange = { data -> credentials = credentials.copy(pwd = data) },
                         submit = {
-                            if (!checkCredentials(credentials, context)) credentials = Credentials()
+                            if (!checkCredentials(credentials, context,navController)) credentials = Credentials()
                         },
 //                modifier = Modifier.fillMaxWidth()
                     )
@@ -139,10 +139,11 @@ fun LoginForm(navController: NavController) {
 
 }
 
-fun checkCredentials(creds: Credentials, context: Context): Boolean {
-    if (creds.isNotEmpty() && creds.login == "admin") {
-        context.startActivity(Intent(context, MainActivity::class.java))
-        (context as Activity).finish()
+fun checkCredentials(creds: Credentials, context: Context, navController: NavController): Boolean {
+    if (creds.isNotEmpty()) {
+        navController.navigate(Screen.MainScreen.route)
+//        context.startActivity(Intent(context, MainActivity::class.java))
+//        (context as Activity).finish()
         return true
     } else {
         Toast.makeText(context, "Wrong Credentials", Toast.LENGTH_SHORT).show()

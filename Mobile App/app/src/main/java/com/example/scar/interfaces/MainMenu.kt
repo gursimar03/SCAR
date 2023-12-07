@@ -23,6 +23,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -61,11 +62,14 @@ import com.jcbottomnavigationdemo.navigation.NavigationItemBot
 
 @Composable
 fun MainMenu(navController: NavController) {
-    Surface(modifier = Modifier.fillMaxSize()){
-        Image(painter = painterResource(id = R.drawable.background),
-            contentDescription = "bg",
-            contentScale = ContentScale.FillBounds,
-            modifier=Modifier.fillMaxWidth())
+    Surface(modifier = Modifier.fillMaxSize(),
+//        color = cardBgDark,
+
+        ){
+//        Image(painter = painterResource(id = R.drawable.background),
+//            contentDescription = "bg",
+//            contentScale = ContentScale.FillBounds,
+//            modifier=Modifier.fillMaxWidth())
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -77,7 +81,7 @@ fun MainMenu(navController: NavController) {
                 modifier = Modifier
                     .height(550.dp)
                     .padding(16.dp),
-                colors = CardDefaults.cardColors(containerColor = cardBg2.copy(alpha = 0.8f))
+                colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                 matchList()
             }
@@ -85,20 +89,26 @@ fun MainMenu(navController: NavController) {
                 modifier = Modifier
                     .width(350.dp)
                     .height(80.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                   ,
-                onClick = { navController.navigate(Screen.StartMatch.route) },
-//                shape = RoundedCornerShape(10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    textBg
-                ),
-                border = BorderStroke(5.dp, Color.Black)
+                    .shadow(
+                        elevation = 8.dp,
+                        shape = RoundedCornerShape(70),
+                        clip = true
+                    ),
+//                    .clip(RoundedCornerShape(8.dp)),
 
+                onClick = { navController.navigate(Screen.LinkWeapon.route)},
+                colors = ButtonDefaults.buttonColors(
+                    cardBg2
+//                    Color.White
+                )
             ) {
-                Text(text = "Start Match", fontFamily= FontFamily(
-                    Font(R.font.montserrat_bold,weight= FontWeight.Normal)
-                ), fontSize = 20.sp)
+                Text(
+                    text = "Start Match",
+                    fontFamily = FontFamily(Font(R.font.montserrat_bold, weight = FontWeight.Normal)),
+                    fontSize = 20.sp
+                )
             }
+
         }
 
     }
@@ -197,9 +207,19 @@ fun matchList()
 
 @Composable
 fun matches(Kills:Int, Spotted:Int, Travelled:Int) {
-    Text(
+    Card(
+        modifier = Modifier
+//                    .fillMaxSize()
+            .padding(16.dp)
+            .height(550.dp)
+            .shadow(
+//                        spotColor = Color.Green,
+                elevation = 8.dp,
+            ),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
+    ) {    Text(
         text = "Date",
-        style = TextStyle(color = Color.White, fontSize = 30.sp),
+        style = TextStyle(color = Color.Black, fontSize = 30.sp),
         fontFamily = FontFamily(
             Font(R.font.montserrat_bold, weight = FontWeight.Normal)
         ),
@@ -374,7 +394,7 @@ fun matches(Kills:Int, Spotted:Int, Travelled:Int) {
         }
     }
 }
-
+}
 
 
 

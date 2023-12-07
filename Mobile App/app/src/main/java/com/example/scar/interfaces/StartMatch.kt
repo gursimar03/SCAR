@@ -56,12 +56,12 @@ import com.example.scar.ui.theme.textBg
 @Composable
 fun Startmatch(navController: NavController) {
     Surface(modifier = Modifier.fillMaxSize()) {
-        Image(
-            painter = painterResource(id = R.drawable.background),
-            contentDescription = "bg",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier.fillMaxWidth()
-        )
+//        Image(
+//            painter = painterResource(id = R.drawable.background),
+//            contentDescription = "bg",
+//            contentScale = ContentScale.FillBounds,
+//            modifier = Modifier.fillMaxWidth()
+//        )
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -76,8 +76,8 @@ fun Startmatch(navController: NavController) {
                     .padding(16.dp)
                     .height(500.dp)
                     .shadow(
-                        spotColor = Color.Green,
-                        elevation = 40.dp,
+//                        spotColor = Color.Green,
+                        elevation = 8.dp,
                     ),
                 colors = CardDefaults.cardColors(containerColor = cardBg2.copy(alpha = 0.8f))
             ) {
@@ -219,7 +219,14 @@ fun Startmatch(navController: NavController) {
 
             val playerViewModel: PlayerViewModel = viewModel()
             Button(
-                modifier = Modifier.width(300.dp).height(70.dp),
+                modifier = Modifier
+                    .width(350.dp)
+                    .height(80.dp)
+                    .shadow(
+                        elevation = 8.dp,
+                        shape = RoundedCornerShape(70),
+                        clip = true
+                    ),
                 onClick = {
                     TestUI(playerUiState = playerViewModel.playerUiState)
                 },
@@ -227,7 +234,7 @@ fun Startmatch(navController: NavController) {
                 colors = ButtonDefaults.buttonColors(
                     textBg
                 ),
-                border = BorderStroke(5.dp, Color.Black)
+//                border = BorderStroke(5.dp, Color.Black)
             ) {
                 Text(text = "Done", fontFamily= FontFamily(
                     Font(R.font.montserrat_bold,weight= FontWeight.Normal)

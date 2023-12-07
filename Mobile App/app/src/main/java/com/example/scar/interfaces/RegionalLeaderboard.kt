@@ -57,12 +57,12 @@ data class LeaderboardEntry(val name: String, val score: Int)
 @Composable
 fun leaderboard(modifier: Modifier = Modifier, navController: NavController, region:String?){
     Surface(modifier = Modifier.fillMaxSize(),
-        color = mainBg // Set the desired background color here
+//        color = mainBg // Set the desired background color here
     ) {
-        Image(painter = painterResource(id = R.drawable.background),
-            contentDescription = "bg",
-            contentScale = ContentScale.FillBounds,
-            modifier=Modifier.fillMaxWidth())
+//        Image(painter = painterResource(id = R.drawable.background),
+//            contentDescription = "bg",
+//            contentScale = ContentScale.FillBounds,
+//            modifier=Modifier.fillMaxWidth())
 
         Column {
             Row(

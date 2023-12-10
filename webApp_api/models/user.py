@@ -2,7 +2,7 @@
 from app_factory import db
 from models.session import Session
 from models.leaderboard import Leaderboard
-from models.match_result import MatchResult
+from models.match import Match
 from models.inventory import Inventory
 
 class User(db.Model):
@@ -17,4 +17,4 @@ class User(db.Model):
     sessions = db.relationship('Session', backref='user', lazy=True)
     leaderboard = db.relationship('Leaderboard', backref='user', lazy=True)
     inventory = db.relationship('Inventory', backref='user', lazy=True)
-    match_results = db.relationship('MatchResult', backref='user', lazy=True)
+    matches = db.relationship('Matcht', backref='user', lazy=True)

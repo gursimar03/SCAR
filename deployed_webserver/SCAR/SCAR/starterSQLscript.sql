@@ -6,7 +6,7 @@
 
     -- Drop tables if they exist
     DROP TABLE IF EXISTS inventory;
-    DROP TABLE IF EXISTS match_result;
+    DROP TABLE IF EXISTS match;
     DROP TABLE IF EXISTS arena;
     DROP TABLE IF EXISTS weapon;
     DROP TABLE IF EXISTS leaderboard;
@@ -100,8 +100,8 @@
         ('Arena2');
 
 
-    -- Create the 'match_result' table
-    CREATE TABLE IF NOT EXISTS match_result (
+    -- Create the 'match' table
+    CREATE TABLE IF NOT EXISTS matcht (
         match_id INT PRIMARY KEY AUTO_INCREMENT,
         user_id INT,
         weapon_id INT,
@@ -110,13 +110,14 @@
         kills INT,
         deaths INT,
         score INT,
+		status VARCHAR(20) DEFAULT 'processing',
         FOREIGN KEY (user_id) REFERENCES user(user_id),
         FOREIGN KEY (weapon_id) REFERENCES weapon(weapon_id),
         FOREIGN KEY (arena_id) REFERENCES arena(arena_id)
     );
 
-    -- Insert sample data into the 'match_result' table
-    INSERT INTO match_result (user_id, weapon_id, arena_id, enemies_spotted, kills, deaths, score) VALUES
+    -- Insert sample data into the 'match' table
+    INSERT INTO match (user_id, weapon_id, arena_id, enemies_spotted, kills, deaths, score) VALUES
         (1, 1, 1, 10, 5, 2, 30),
         (2, 2, 1, 8, 3, 1, 25),
         (3, 3, 2, 12, 7, 4, 40);

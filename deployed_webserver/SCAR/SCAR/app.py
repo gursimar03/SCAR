@@ -7,11 +7,11 @@ from SCAR.app_factory import create_app
 from SCAR.auth.user import user_bp
 from SCAR.routes.arena import arena_bp
 from SCAR.routes.inventory import inventory_bp
-from SCAR.routes.match_result import match_result_bp
+from deployed_webserver.SCAR.SCAR.routes.match import match_bp
 from SCAR.routes.leaderboard import leaderboard_bp
 from SCAR.routes.weapon import weapon_bp
 from SCAR.routes.pn_routes import pb_route
-# from  import leaderboard_bp, arena_bp, inventory_bp, match_result_bp, weapon_bp
+# from  import leaderboard_bp, arena_bp, inventory_bp, match_bp, weapon_bp
 import os 
 
 app, db = create_app()
@@ -21,7 +21,7 @@ app.register_blueprint(user_bp)
 app.register_blueprint(leaderboard_bp)
 app.register_blueprint(arena_bp)
 app.register_blueprint(inventory_bp)
-app.register_blueprint(match_result_bp)
+app.register_blueprint(match_bp)
 app.register_blueprint(weapon_bp)
 app.register_blueprint(pb_route)
 

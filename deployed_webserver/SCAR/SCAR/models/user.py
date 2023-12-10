@@ -2,7 +2,7 @@
 from SCAR.app_factory import db
 from SCAR.models.session import Session
 from SCAR.models.leaderboard import Leaderboard
-from SCAR.models.match_result import MatchResult
+from deployed_webserver.SCAR.SCAR.models.match import Match
 from SCAR.models.inventory import Inventory
 
 class User(db.Model):
@@ -17,4 +17,4 @@ class User(db.Model):
     sessions = db.relationship('Session', backref='user', lazy=True)
     leaderboard = db.relationship('Leaderboard', backref='user', lazy=True)
     inventory = db.relationship('Inventory', backref='user', lazy=True)
-    match_results = db.relationship('MatchResult', backref='user', lazy=True)
+    matches = db.relationship('Match', backref='user', lazy=True)

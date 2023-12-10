@@ -7,4 +7,4 @@ class Weapon(db.Model):
 
     # Relationships
     inventory = db.relationship('Inventory', backref='weapon', lazy=True)
-    match_results = db.relationship('MatchResult', backref='weapon', lazy=True)
+    matches = db.relationship('Match', backref='weapon', lazy=True)

@@ -9,3 +9,4 @@ class MatchResult(db.Model):
     kills = db.Column(db.Integer)
     deaths = db.Column(db.Integer)
     score = db.Column(db.Integer)
+    status = db.Column(db.String(20), default='in_progress')

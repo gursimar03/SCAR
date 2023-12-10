@@ -55,3 +55,24 @@ def get_match_history():
 
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
+# Route to get the users gps location history throughout the match
+@match_result_bp.route('/api/get/gps_history', methods=['GET'])
+def get_gps_history():
+	try:
+		data = request.json
+		user_id = data.get('user_id')
+		match_id = data.get('match_id')
+
+		# Add your get gps history logic here, including retrieving the gps history from the database
+		gps_history = MatchResult.query.filter_by(user_id=user_id, match_id=match_id, status="finished").all()
+  
+		
+		# Convert the gps history to a format you want to return
+		data = [{'match_id': gps.match_id, 'user_id': gps.user_id, 'gps_data': gps.gps_data}
+				for gps in gps_history]
+
+		return jsonify({'success': True, 'data': data}), 200
+
+	except Exception as e:
+		return jsonify({'success': False, 'error': str(e)}), 500

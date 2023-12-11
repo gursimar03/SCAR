@@ -7,12 +7,6 @@ import org.json.JSONArray
 
 @Serializable
 data class Data(@SerialName(value = "data")
-                 var players: Player? = null)
+                 var players: List<Player>,
+                val success: Boolean)
 
-//                fun getPost(): userPost? {
-//                return mPost
-//                }
-//
-//                fun setPost(post: userPost) {
-//                mPost = post
-//                    }

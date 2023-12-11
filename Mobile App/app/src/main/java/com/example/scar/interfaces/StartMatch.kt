@@ -1,6 +1,7 @@
 package com.example.scar.interfaces
 
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -44,7 +45,9 @@ import com.example.scar.screens.PlayerUiState
 import com.example.scar.screens.PlayerViewModel
 import com.example.scar.screens.SuccessViewModel
 import com.example.scar.ui.theme.Data
+import com.example.scar.ui.theme.Player
 import com.example.scar.ui.theme.cardBg2
+import com.example.scar.ui.theme.cardBgDark
 import com.example.scar.ui.theme.creme
 import com.example.scar.ui.theme.textBg
 
@@ -53,30 +56,30 @@ import com.example.scar.ui.theme.textBg
 @Composable
 fun Startmatch(navController: NavController) {
     Surface(modifier = Modifier.fillMaxSize()) {
-        Image(
-            painter = painterResource(id = R.drawable.background),
-            contentDescription = "bg",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier.fillMaxWidth()
-        )
+//        Image(
+//            painter = painterResource(id = R.drawable.background),
+//            contentDescription = "bg",
+//            contentScale = ContentScale.FillBounds,
+//            modifier = Modifier.fillMaxWidth()
+//        )
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
 //                .fillMaxSize()
-                .padding(horizontal = 30.dp)
+                .padding(horizontal = 16.dp)
 
         ) {
             Card(
                 modifier = Modifier
 //                    .fillMaxSize()
                     .padding(16.dp)
-                    .height(550.dp)
+                    .height(500.dp)
                     .shadow(
-                        spotColor = Color.Green,
-                        elevation = 40.dp,
+//                        spotColor = Color.Green,
+                        elevation = 8.dp,
                     ),
-                colors = CardDefaults.cardColors(containerColor = cardBg2)
+                colors = CardDefaults.cardColors(containerColor = cardBg2.copy(alpha = 0.8f))
             ) {
                 Text(
                     text = "Configuration",
@@ -104,12 +107,13 @@ fun Startmatch(navController: NavController) {
                             .padding(0.dp)
                             .shadow(
                                 shape = RoundedCornerShape(70),
-                                spotColor = Color.Green,
-                                elevation = 9.dp,
-                            )) {
+                                spotColor = Color.Black,
+                                elevation = 30.dp,
+                            )
+                            ) {
                         Row {
-                            Card (colors = CardDefaults.cardColors(containerColor = creme),
-                                modifier = Modifier.width(100.dp)){
+                            Card (colors = CardDefaults.cardColors(containerColor = cardBgDark),
+                                modifier = Modifier.width(130.dp)){
                                 Text(text = "Arena",
                                     style = TextStyle(color = Color.White),
                                     fontSize = 20.sp,
@@ -120,7 +124,7 @@ fun Startmatch(navController: NavController) {
                             }
 
                             Spacer(modifier = Modifier.width(80.dp))
-                            SwitchMinimalExample()
+//                            SwitchMinimalExample()
                         }
                     }
                     Spacer(modifier = Modifier.height(30.dp))
@@ -136,8 +140,8 @@ fun Startmatch(navController: NavController) {
                                 elevation = 30.dp,
                             )) {
                         Row {
-                            Card (colors = CardDefaults.cardColors(containerColor = creme),
-                                modifier = Modifier.width(100.dp)){
+                            Card (colors = CardDefaults.cardColors(containerColor = cardBgDark),
+                                modifier = Modifier.width(130.dp)){
                                 Text(text = "GPS",
                                     style = TextStyle(color = Color.White),
                                     fontSize = 20.sp,
@@ -165,7 +169,7 @@ fun Startmatch(navController: NavController) {
                                 elevation = 30.dp,
                             )) {
                         Row {
-                            Card (colors = CardDefaults.cardColors(containerColor = creme),
+                            Card (colors = CardDefaults.cardColors(containerColor = cardBgDark),
                                 modifier = Modifier.width(130.dp)){
                                 Text(text = "Highlight",
                                     style = TextStyle(color = Color.White),
@@ -194,8 +198,8 @@ fun Startmatch(navController: NavController) {
                             ),
                         ) {
                         Row {
-                            Card (colors = CardDefaults.cardColors(containerColor = creme),
-                                modifier = Modifier.width(100.dp)){
+                            Card (colors = CardDefaults.cardColors(containerColor = cardBgDark),
+                                modifier = Modifier.width(130.dp)){
                                 Text(text = "LED",
                                     style = TextStyle(color = Color.White),
                                     fontSize = 20.sp,
@@ -209,25 +213,32 @@ fun Startmatch(navController: NavController) {
                             SwitchMinimalExample()
                         }
                     }
-
-                  Spacer(modifier = Modifier.height(35.dp))
-                    val playerViewModel: PlayerViewModel = viewModel()
-                    Button(
-                        modifier = Modifier.width(300.dp),
-                        onClick = {
-                            TestUI(playerUiState = playerViewModel.playerUiState)
-                                  },
-                        shape = RoundedCornerShape(10.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            textBg
-                        )
-                    ) {
-                        Text(text = "Done", fontFamily= FontFamily(
-                            Font(R.font.montserrat_bold,weight= FontWeight.Normal)
-                        ), fontSize = 20.sp)
-                    }
-
                 }
+            }
+            Spacer(modifier = Modifier.height(15.dp))
+
+            val playerViewModel: PlayerViewModel = viewModel()
+            Button(
+                modifier = Modifier
+                    .width(350.dp)
+                    .height(80.dp)
+                    .shadow(
+                        elevation = 8.dp,
+                        shape = RoundedCornerShape(70),
+                        clip = true
+                    ),
+                onClick = {
+                    TestUI(playerUiState = playerViewModel.playerUiState)
+                },
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    textBg
+                ),
+//                border = BorderStroke(5.dp, Color.Black)
+            ) {
+                Text(text = "Done", fontFamily= FontFamily(
+                    Font(R.font.montserrat_bold,weight= FontWeight.Normal)
+                ), fontSize = 20.sp)
             }
 
         }
@@ -273,6 +284,13 @@ fun TestUI(playerUiState: PlayerUiState) {
 
 fun Succeed(testList: Data){
     Log.d("Success",testList.toString())
+    val players: List<Player> = testList.players
+    Log.d("Players",players.toString())
+
+    // Print the player infor  mation
+    players.forEach { player ->
+        println("Leaderboard ID: ${player.leaderboardID}, User ID: ${player.userID}")
+    }
 
 }
 fun Loading2() {

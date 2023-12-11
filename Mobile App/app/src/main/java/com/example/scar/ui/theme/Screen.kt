@@ -6,6 +6,8 @@ sealed class Screen(val route:String){
 
     object StartMatch : Screen("startmatch_screen")
 
+    object LinkWeapon : Screen("linkweapon_screen")
+
     fun withArgs(args:String): String{
         return buildString {
             append(route)

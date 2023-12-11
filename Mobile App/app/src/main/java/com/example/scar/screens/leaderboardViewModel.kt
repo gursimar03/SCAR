@@ -62,13 +62,10 @@ var leaderboardUiState: LeaderboardUiState by mutableStateOf(LeaderboardUiState.
             leaderboardUiState = LeaderboardUiState.Loading
             leaderboardUiState= try {
                 val newData = Api.retrofitService.getUsers()
-//                Log.d("newData", newData.toString())
+                Log.d("newData", newData.toString())
                 LeaderboardUiState.Success(
                     newData
                 )
-//                withContext(Dispatchers.Main) {
-//                    leaderboardData = newData
-//                }
             } catch (e: IOException) {
 //                Log.e("error", "IOException: ${e.message}", e)
                 LeaderboardUiState.Error

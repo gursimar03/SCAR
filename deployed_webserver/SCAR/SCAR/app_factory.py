@@ -12,11 +12,11 @@ def create_app():
     load_dotenv()
 
     # Explicitly set SQLALCHEMY_DATABASE_URI
+    DATABASE_URI=mysql+mysqlconnector://root:jxd3FzpYmuF4gK2SD62PxcLEVzca26@localhost/scar
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     # Create the SQLAlchemy object
     db.init_app(app)
-
+    
     return app, db
 

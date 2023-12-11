@@ -55,15 +55,10 @@ import kotlin.math.min
 data class LeaderboardEntry(val name: String, val score: Int)
 
 @Composable
-fun leaderboard(modifier: Modifier = Modifier, navController: NavController, region:String?){
-    Surface(modifier = Modifier.fillMaxSize(),
-//        color = mainBg // Set the desired background color here
+fun leaderboard(modifier: Modifier = Modifier, navController: NavController, region: String?) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
     ) {
-//        Image(painter = painterResource(id = R.drawable.background),
-//            contentDescription = "bg",
-//            contentScale = ContentScale.FillBounds,
-//            modifier=Modifier.fillMaxWidth())
-
         Column {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -234,18 +229,20 @@ fun leaderboard(modifier: Modifier = Modifier, navController: NavController, reg
             }
             Row(
                 modifier = Modifier
-                    .height(385.dp) // Use weight to make this row take the remaining available space
+                    .height(385.dp)
+                    .padding(16.dp)
             ) {
                 // Your LeaderboardUI content
 //                val leaderboardViewModel: LeaderboardViewModel = viewModel()
 //                LeaderboardUI(leaderboardUiState = leaderboardViewModel.leaderboardUiState)
                 val playerViewModel: PlayerViewModel = viewModel()
                 LeaderboardUI(playerUiState = playerViewModel.playerUiState)
+
             }
             Row(
                 modifier = Modifier
                     .weight(1f)
-            ) {
+            )  {
                 // LeaderboardItem content
                 LeaderboardItem(entry = LeaderboardEntry("You", 123), isGold = false, 999)
             }
@@ -298,9 +295,8 @@ fun LeaderboardScreen(leaderboardData: List<LeaderboardEntry>) {
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
-fun LeaderboardItem(entry: LeaderboardEntry, isGold: Boolean, index:Int) {
+fun LeaderboardItem(entry: LeaderboardEntry, isGold: Boolean, index: Int) {
     val alpha = if (isGold) {
-        // Assuming you want the alpha to increase for the first three items
         val maxAlpha = 0.9f
         val minAlpha = 0.3f
         val alphaStep = (maxAlpha - minAlpha) / 3
@@ -314,62 +310,45 @@ fun LeaderboardItem(entry: LeaderboardEntry, isGold: Boolean, index:Int) {
         isGold && index < 3 -> Color(0xFFFFD700).copy(alpha = alpha) // Gold color for first three items
         index == 999 -> Color.Blue // Dark blue for index 999
         else -> userBg // Your default background color
-    }  // Use gold color for the first three items
+    }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clip(RoundedCornerShape(70)),
+            .clip(RoundedCornerShape(16.dp)), // Adjusted corner radius
         colors = CardDefaults.cardColors(containerColor = backgroundColor)
     ) {
-        Box(
+        Row(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp)
-                .height(45.dp)
-                .shadow(
-                    shape = RoundedCornerShape(70),
-                    spotColor = Color.White,
-                    elevation = 30.dp,
-                ),
-
+                .fillMaxWidth()
+                .padding(16.dp), // Adjusted padding
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            // Your existing content
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-
-            ) {
-                Text(text = entry.name,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontSize = 20.sp,
-                    color = Color.White,
-                    fontFamily= FontFamily(
-                        Font(R.font.montserrat_regular,weight= FontWeight.Normal)
-                    )
-                )
-                Text(text = entry.score.toString(),
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontSize = 20.sp,
-                    color = Color.White,
-                    fontFamily= FontFamily(
-                        Font(R.font.montserrat_regular,weight= FontWeight.Normal)
-                    )
-                )
-            }
-
-            // Additional content (you can customize this)
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(end = 16.dp)
-            ) {
-            }
+            Text(
+                text = entry.name,
+                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 20.sp,
+                color = Color.White,
+                fontFamily = FontFamily(
+                    Font(R.font.montserrat_regular, weight = FontWeight.Normal)
+                ),
+                modifier = Modifier.weight(1f) // Adjusted weight
+            )
+            Text(
+                text = entry.score.toString(),
+                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 20.sp,
+                color = Color.White,
+                fontFamily = FontFamily(
+                    Font(R.font.montserrat_regular, weight = FontWeight.Normal)
+                ),
+                modifier = Modifier.weight(1f) // Adjusted weight
+            )
         }
     }
 }
+
 //
 @Composable
 fun LeaderboardUI(playerUiState: PlayerUiState) {
@@ -441,13 +420,7 @@ fun Success(userInfoList: Data){
 //    LeaderboardScreen(leaderboardData = leaderboardData)
 //}
 @Composable
-fun Loading(){
-//    val leaderboardViewModel: LeaderboardViewModel = viewModel()
-
-//    val userInfoList = leaderboardViewModel.leaderboardData
-//    Log.d("userInfoList",userInfoList.toString())
-
-//    val leaderEntryList:List<LeaderboardEntry>
+fun Loading() {
     val leaderboardData = remember {
         listOf(
             LeaderboardEntry("user 1", 500),
@@ -459,11 +432,9 @@ fun Loading(){
             LeaderboardEntry("user 7", 550),
         )
     }
-//    Log.d("leaderEntryList",leaderEntryList.toString())
 
     LeaderboardScreen(leaderboardData = leaderboardData)
 }
-
 
 
 

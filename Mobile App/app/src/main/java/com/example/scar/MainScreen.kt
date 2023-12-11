@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.scar.interfaces.LinkWeapon
 import com.example.scar.interfaces.MainMenu
 import com.example.scar.interfaces.Startmatch
 import com.example.scar.ui.theme.Leaderboard
@@ -35,16 +36,17 @@ fun Navigation()
             leaderboard(navController = navController,region="ireland")
         }
         composable(route = Screen.LogIn.route){
-//            leaderboard(navController = navController,region="ireland")
             LoginForm(navController = navController)
         }
         composable(route = Screen.MainScreen.route){
-//            leaderboard(navController = navController,region="ireland")
             MainMenu(navController = navController)
         }
         composable(route = Screen.StartMatch.route){
-//            leaderboard(navController = navController,region="ireland")
             Startmatch(navController = navController)
+        }
+
+        composable(route = Screen.LinkWeapon.route){
+            LinkWeapon(navController = navController)
         }
 
     }

@@ -38,6 +38,7 @@ import com.example.scar.screens.LeaderboardUiState
 import com.example.scar.screens.LeaderboardViewModel
 import com.example.scar.screens.PlayerUiState
 import com.example.scar.screens.PlayerViewModel
+import com.example.scar.ui.theme.Data
 import com.example.scar.ui.theme.Leaderboard
 import com.example.scar.ui.theme.Player
 import com.example.scar.ui.theme.Screen
@@ -56,12 +57,12 @@ data class LeaderboardEntry(val name: String, val score: Int)
 @Composable
 fun leaderboard(modifier: Modifier = Modifier, navController: NavController, region:String?){
     Surface(modifier = Modifier.fillMaxSize(),
-        color = mainBg // Set the desired background color here
+//        color = mainBg // Set the desired background color here
     ) {
-        Image(painter = painterResource(id = R.drawable.background),
-            contentDescription = "bg",
-            contentScale = ContentScale.FillBounds,
-            modifier=Modifier.fillMaxWidth())
+//        Image(painter = painterResource(id = R.drawable.background),
+//            contentDescription = "bg",
+//            contentScale = ContentScale.FillBounds,
+//            modifier=Modifier.fillMaxWidth())
 
         Column {
             Row(
@@ -236,10 +237,10 @@ fun leaderboard(modifier: Modifier = Modifier, navController: NavController, reg
                     .height(385.dp) // Use weight to make this row take the remaining available space
             ) {
                 // Your LeaderboardUI content
-                val leaderboardViewModel: LeaderboardViewModel = viewModel()
-                LeaderboardUI(leaderboardUiState = leaderboardViewModel.leaderboardUiState)
-//                val playerViewModel: PlayerViewModel = viewModel()
-//                LeaderboardUI(playerUiState = playerViewModel.playerUiState)
+//                val leaderboardViewModel: LeaderboardViewModel = viewModel()
+//                LeaderboardUI(leaderboardUiState = leaderboardViewModel.leaderboardUiState)
+                val playerViewModel: PlayerViewModel = viewModel()
+                LeaderboardUI(playerUiState = playerViewModel.playerUiState)
             }
             Row(
                 modifier = Modifier
@@ -291,9 +292,6 @@ fun LeaderboardScreen(leaderboardData: List<LeaderboardEntry>) {
                 LeaderboardItem(entry = entry, isGold = index < 3, index)
             }
         }
-//        Spacer(modifier = Modifier.height(40.dp))
-
-
     }
 
 }
@@ -373,66 +371,30 @@ fun LeaderboardItem(entry: LeaderboardEntry, isGold: Boolean, index:Int) {
     }
 }
 //
-//@Composable
-//fun LeaderboardUI(playerUiState: PlayerUiState) {
-//
-//    when (playerUiState) {
-//        is PlayerUiState.Loading -> Loading()
-//        is PlayerUiState.Success ->
-//           Success(playerUiState.users)
-//
-//
-//        is PlayerUiState.Error -> Loading()
-//        else -> {
-//            Loading()}
-//    }
-//}
-//
-//@Composable
-//fun Success(userInfoList: List<Player>){
-//    val leaderboardViewModel: LeaderboardViewModel = viewModel()
-//
-//    Log.d("userInfoList",userInfoList.toString())
-//
-//
-//    val leaderEntryList:List<LeaderboardEntry> = userInfoList.map {
-//        LeaderboardEntry(it.leaderboardID.toString(),it.userID)
-//    }
-//    val leaderboardData = remember {
-//            leaderEntryList
-//    }
-//
-//    Log.d("leaderEntryList",leaderEntryList.toString())
-//
-//    LeaderboardScreen(leaderboardData = leaderboardData)
-//}
-
-
-
 @Composable
-fun LeaderboardUI(leaderboardUiState: LeaderboardUiState) {
+fun LeaderboardUI(playerUiState: PlayerUiState) {
 
-    when (leaderboardUiState) {
-        is LeaderboardUiState.Loading -> Loading()
-        is LeaderboardUiState.Success ->
-           Success(leaderboardUiState.users)
+    when (playerUiState) {
+        is PlayerUiState.Loading -> Loading()
+        is PlayerUiState.Success ->
+           Success(playerUiState.users)
 
 
-        is LeaderboardUiState.Error -> Loading()
+        is PlayerUiState.Error -> Loading()
         else -> {
             Loading()}
     }
 }
 
 @Composable
-fun Success(userInfoList: List<User>){
+fun Success(userInfoList: Data){
     val leaderboardViewModel: LeaderboardViewModel = viewModel()
 
-    Log.d("userInfoList",userInfoList.toString())
+    Log.d("userInfoList",userInfoList.players.toString())
 
 
-    val leaderEntryList:List<LeaderboardEntry> = userInfoList.map {
-        LeaderboardEntry(it.username, calculateScore(it.kills, it.spots, it.accuracy, it.travelled))
+    val leaderEntryList:List<LeaderboardEntry> = userInfoList.players.map {
+        LeaderboardEntry(it.leaderboardID.toString(),it.userID)
     }
     val leaderboardData = remember {
             leaderEntryList
@@ -442,6 +404,42 @@ fun Success(userInfoList: List<User>){
 
     LeaderboardScreen(leaderboardData = leaderboardData)
 }
+
+
+
+//@Composable
+//fun LeaderboardUI(leaderboardUiState: LeaderboardUiState) {
+//
+//    when (leaderboardUiState) {
+//        is LeaderboardUiState.Loading -> Loading()
+//        is LeaderboardUiState.Success ->
+//           Success(leaderboardUiState.users)
+//
+//
+//        is LeaderboardUiState.Error -> Loading()
+//        else -> {
+//            Loading()}
+//    }
+//}
+//
+//@Composable
+//fun Success(userInfoList: List<User>){
+//    val leaderboardViewModel: LeaderboardViewModel = viewModel()
+//
+//    Log.d("userInfoList",userInfoList.toString())
+//
+//
+//    val leaderEntryList:List<LeaderboardEntry> = userInfoList.map {
+//        LeaderboardEntry(it.username, calculateScore(it.kills, it.spots, it.accuracy, it.travelled))
+//    }
+//    val leaderboardData = remember {
+//            leaderEntryList
+//    }
+//
+//    Log.d("leaderEntryList",leaderEntryList.toString())
+//
+//    LeaderboardScreen(leaderboardData = leaderboardData)
+//}
 @Composable
 fun Loading(){
 //    val leaderboardViewModel: LeaderboardViewModel = viewModel()

@@ -10,7 +10,8 @@ def create_app():
 
     # Load environment variables from .env
     load_dotenv()
-
+    link = os.getenv('DATABASE_URI')
+    print(link)
     # Configure your database connection using environment variables
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

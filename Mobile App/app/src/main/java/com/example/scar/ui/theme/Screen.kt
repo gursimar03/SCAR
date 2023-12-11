@@ -1,7 +1,9 @@
 package com.example.scar.ui.theme
 
 sealed class Screen(val route:String){
+
 	object SplashScreen : Screen("splashScreen")
+
     object LogIn : Screen("login_screen")
     object MainScreen : Screen("main_screen")
 

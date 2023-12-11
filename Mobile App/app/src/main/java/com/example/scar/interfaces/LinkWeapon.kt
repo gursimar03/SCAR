@@ -27,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,11 +44,18 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+
+import com.example.scar.AppViewModelProvider
 import com.example.scar.R
+import com.example.scar.gun.GunEntryViewModel
+
 import com.example.scar.screens.PlayerUiState
 import com.example.scar.screens.PlayerViewModel
 import com.example.scar.screens.SuccessViewModel
 import com.example.scar.ui.theme.Data
+
+import com.example.scar.ui.theme.Gun
+
 import com.example.scar.ui.theme.Player
 import com.example.scar.ui.theme.Screen
 import com.example.scar.ui.theme.cardBg2
@@ -55,10 +63,14 @@ import com.example.scar.ui.theme.cardBgDark
 import com.example.scar.ui.theme.creme
 import com.example.scar.ui.theme.textBg
 
+import kotlinx.coroutines.launch
+
+
 //sources
 ///https://stackoverflow.com/questions/72794300/is-there-a-way-to-filter-the-exposed-dropdown-menu-options-depending-on-the-valu/72795638#72795638
 @Composable
 fun LinkWeapon(navController: NavController) {
+
     Surface(modifier = Modifier.fillMaxSize()) {
 //        Image(
 //            painter = painterResource(id = R.drawable.background),
@@ -98,7 +110,9 @@ fun LinkWeapon(navController: NavController) {
                             clip = true
                         ),
                     onClick = {
-                         navController.navigate(Screen.StartMatch.route)
+
+                        navController.navigate(Screen.StartMatch.route)
+
                     },
                     shape = RoundedCornerShape(10.dp),
                     colors = ButtonDefaults.buttonColors(
@@ -144,6 +158,10 @@ fun weaponList()
 
 @Composable
 fun weapon(name:String){
+
+    val coroutineScope = rememberCoroutineScope()
+    val GunViewModel:GunEntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
+
     Card(
         modifier = Modifier
 //                    .fillMaxSize()
@@ -188,7 +206,14 @@ fun weapon(name:String){
                     ),
             ) {
                 Row {
-                    Button(onClick = { /*TODO*/ },
+
+                    Button(onClick = {
+                        val TestGun = Gun(name = "Gun A", gunID = 1)
+                        coroutineScope.launch {
+                            GunViewModel.saveItem(TestGun);
+                        }
+                    },
+
                         modifier = Modifier.fillMaxSize()) {
                         Text(text = "Link Gun")
                     }

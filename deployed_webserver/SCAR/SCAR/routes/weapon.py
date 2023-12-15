@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from SCAR.app_factory import db
-from SCAR.models import weapon
+from SCAR.models.weapon import Weapon
 
 weapon_bp = Blueprint('weapon_bp', __name__)
 

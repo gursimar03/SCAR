@@ -1,8 +1,6 @@
 package com.example.scar.interfaces
 
 import android.util.Log
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,8 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -41,14 +37,13 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.scar.R
+import com.example.scar.network.Api
 import com.example.scar.screens.PlayerUiState
 import com.example.scar.screens.PlayerViewModel
-import com.example.scar.screens.SuccessViewModel
-import com.example.scar.ui.theme.Data
+import com.example.scar.ui.theme.LeaderboardData
 import com.example.scar.ui.theme.Player
 import com.example.scar.ui.theme.cardBg2
 import com.example.scar.ui.theme.cardBgDark
-import com.example.scar.ui.theme.creme
 import com.example.scar.ui.theme.textBg
 
 //sources
@@ -228,7 +223,9 @@ fun Startmatch(navController: NavController) {
                         clip = true
                     ),
                 onClick = {
-                    TestUI(playerUiState = playerViewModel.playerUiState)
+                    TestUI(playerUiState = playerViewModel.playerUiState
+                    )
+                    Api.sendConfig()
                 },
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
@@ -282,7 +279,7 @@ fun TestUI(playerUiState: PlayerUiState) {
     }
 }
 
-fun Succeed(testList: Data){
+fun Succeed(testList: LeaderboardData){
     Log.d("Success",testList.toString())
     val players: List<Player> = testList.players
     Log.d("Players",players.toString())

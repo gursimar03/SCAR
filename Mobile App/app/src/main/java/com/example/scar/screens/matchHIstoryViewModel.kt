@@ -24,6 +24,8 @@ import androidx.lifecycle.viewModelScope
 //import com.example.marsphotos.network.MarsApi
 import com.example.scar.network.Api
 import com.example.scar.ui.theme.LeaderboardData
+import com.example.scar.ui.theme.MatchData
+import com.example.scar.ui.theme.MatchHistory
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -31,45 +33,45 @@ import java.io.IOException
 /**
  * UI state for the Home screen
  */
-sealed interface PlayerUiState {
-    data class Success(val users: LeaderboardData) : PlayerUiState
-    object Error : PlayerUiState
-    object Loading : PlayerUiState
+sealed interface MatchHistoryUiState {
+    data class Success(val data: MatchData) : MatchHistoryUiState
+    object Error : MatchHistoryUiState
+    object Loading : MatchHistoryUiState
 }
 
-class PlayerViewModel() : ViewModel() {
+class MatchHistoryViewModel() : ViewModel() {
     /** The mutable State that stores the status of the most recent request */
 
     //        private set
-    var playerUiState: PlayerUiState by mutableStateOf(PlayerUiState.Loading)
+    var matchHistoryUiState: MatchHistoryUiState by mutableStateOf(MatchHistoryUiState.Loading)
         private set
 
     /**
      * Call getMarsPhotos() on init so we can display status immediately.
      */
     init {
-        getUserInfo()
+        getMatchHistory()
     }
 
     /**
      * Gets Mars photos information from the Mars API Retrofit service and updates the
      * [MarsPhoto] [List] [MutableList].
      */
-    fun getUserInfo() {
+    fun getMatchHistory() {
         viewModelScope.launch {
-            playerUiState = PlayerUiState.Loading
-            playerUiState= try {
-                val newData = Api.retrofitService.getPlayers()
+            matchHistoryUiState = MatchHistoryUiState.Loading
+            matchHistoryUiState= try {
+                val newData = Api.retrofitService.getMatches()
 
-                PlayerUiState.Success(
+                MatchHistoryUiState.Success(
                     newData
                 )
 
 
             } catch (e: IOException) {
-                PlayerUiState.Error
+               MatchHistoryUiState.Error
             } catch (e: HttpException) {
-                PlayerUiState.Error
+                MatchHistoryUiState.Error
 
             }
         }

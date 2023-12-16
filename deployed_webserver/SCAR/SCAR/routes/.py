@@ -1,8 +1,18 @@
-from flask import Blueprint , jsonify , request
+from flask import Flask, render_template , Blueprint , jsonify , request
 
 # import sys
 # sys.path.append('SCAR')
 from SCAR.pn_functions import publish_update,setup_pubnub
+# from pn_functions import publish_update,setup_pubnub
+
+# from pn_functions import publishUpdate,setup_pubnub
+# from flask import Blueprint, jsonify, request
+
+# app = Blueprint('user_bp', __name__)
+# connector = app.connector
+
+
+# from webApp_api.static.js.main import publishUpdate
 
 
 
@@ -24,12 +34,6 @@ def set():
 def test():
      publish_update('johns_sd3b_pi', {"motion": "Motion Detected"})
      return jsonify({'success': True}), 200
-
-@pb_route.route('/api/get/start-config/<int:highlight>/<int:LED>', methods=['GET'])
-def config(highlight,LED):
-     publish_update('johns_sd3b_pi', {"highlight": highlight, "LED":LED})
-     return jsonify({'success': True}), 200
-
 
 # @app.route('/api/test')
 # def test():

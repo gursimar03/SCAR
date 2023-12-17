@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from SCAR.app_factory import db
-from SCAR.models.arena  import Arena
+from SCAR.models import arena
 
 arena_bp = Blueprint('arena_bp', __name__)
 
@@ -34,7 +34,3 @@ def post_arena():
     except Exception as e:
         db.session.rollback()
         return jsonify({'success': False, 'error': str(e)}), 500
-
-@arena_bp.route('/api/get/tested', methods=['GET'])
-def tested():
-	return jsonify({'success': True, 'message': 'Arena added successfully'}), 500

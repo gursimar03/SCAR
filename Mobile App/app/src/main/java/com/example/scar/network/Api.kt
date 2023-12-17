@@ -17,22 +17,24 @@ package com.example.scar.network
  */
 
 import Success
-import com.example.scar.screens.LeaderboardUiState
-import com.example.scar.ui.theme.Data
-import com.example.scar.ui.theme.Player
+import android.util.Log
+import com.example.scar.ui.theme.LeaderboardData
+import com.example.scar.ui.theme.MatchData
 import com.example.scar.ui.theme.User
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.GET
 
-//private const val BASE_URL =
-//    "https://scarsd3b.online/
-
 private const val BASE_URL =
-    "https://demo5970075.mockable.io/"
+    "https://scarsd3b.online/"
+
+//private const val BASE_URL =
+//    "https://demo5970075.mockable.io/"
 
 /**
  * Use the Retrofit builder to build a retrofit object using a kotlinx.serialization converter
@@ -52,8 +54,16 @@ interface ApiService{
     @GET("api/get/testing")
     suspend fun getTests(): Success
 
-    @GET("leaderboard")
-    suspend fun getPlayers(): Data
+    @GET("api/leaderboard")
+    suspend fun getPlayers(): LeaderboardData
+
+    @GET("api/get/match_history/1")
+    suspend fun getMatches(): MatchData
+
+    @GET("api/get/setup-pubnub")
+    fun setupPubnub(): Call<Void>
+    @GET("api/get/start-config/1/1")
+    fun sendConfig(): Call<Void>
 }
 
 /**
@@ -62,5 +72,37 @@ interface ApiService{
 object Api {
     val retrofitService: ApiService by lazy {
         retrofit.create(ApiService::class.java)
+    }
+
+    fun setupPubnub() {
+        val call = retrofitService.setupPubnub()
+
+        // Execute the request synchronously (not recommended on the main thread)
+        val response = call.execute()
+
+        // Handle the response (check for errors, etc.)
+        if (response.isSuccessful) {
+            Log.d("Success", response.toString())
+        } else {
+            Log.d("Fail", response.toString())
+        }
+    }
+
+    fun sendConfig() {
+        val call = retrofitService.sendConfig()
+
+        call.enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    Log.d("Success", response.toString())
+                } else {
+                    Log.d("Fail", response.toString())
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.d("Fail", "response.toString()")
+            }
+        })
     }
 }

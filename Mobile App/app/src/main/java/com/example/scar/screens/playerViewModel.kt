@@ -20,10 +20,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.scar.data.GunRepository
 //import com.example.marsphotos.model.MarsPhoto
 //import com.example.marsphotos.network.MarsApi
 import com.example.scar.network.Api
-import com.example.scar.ui.theme.LeaderboardData
+import com.example.scar.ui.theme.Data
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -32,7 +33,7 @@ import java.io.IOException
  * UI state for the Home screen
  */
 sealed interface PlayerUiState {
-    data class Success(val users: LeaderboardData) : PlayerUiState
+    data class Success(val users: Data) : PlayerUiState
     object Error : PlayerUiState
     object Loading : PlayerUiState
 }

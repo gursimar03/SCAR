@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from SCAR.app_factory import db
-from SCAR.models import leaderboard
+from SCAR.models.leaderboard import Leaderboard
 
 leaderboard_bp = Blueprint('leaderboard_bp', __name__)
 

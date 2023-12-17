@@ -20,8 +20,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -31,13 +34,18 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.scar.R
+import com.example.scar.screens.LeaderboardUiState
 import com.example.scar.screens.LeaderboardViewModel
 import com.example.scar.screens.PlayerUiState
 import com.example.scar.screens.PlayerViewModel
-import com.example.scar.ui.theme.LeaderboardData
+import com.example.scar.ui.theme.Data
 import com.example.scar.ui.theme.Leaderboard
+import com.example.scar.ui.theme.Player
 import com.example.scar.ui.theme.Screen
+import com.example.scar.ui.theme.User
+import com.example.scar.ui.theme.calculateScore
 import com.example.scar.ui.theme.cardBg
+import com.example.scar.ui.theme.mainBg
 import com.example.scar.ui.theme.userBg
 import kotlinx.serialization.*
 import kotlin.math.max
@@ -358,7 +366,7 @@ fun LeaderboardUI(playerUiState: PlayerUiState) {
 }
 
 @Composable
-fun Success(userInfoList: LeaderboardData){
+fun Success(userInfoList: Data){
     val leaderboardViewModel: LeaderboardViewModel = viewModel()
 
     Log.d("userInfoList",userInfoList.players.toString())

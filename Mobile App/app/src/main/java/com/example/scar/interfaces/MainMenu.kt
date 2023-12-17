@@ -50,18 +50,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.scar.R
-import com.example.scar.network.Api
-import com.example.scar.screens.MatchHistoryUiState
-import com.example.scar.screens.MatchHistoryViewModel
-import com.example.scar.screens.PlayerUiState
-import com.example.scar.screens.PlayerViewModel
 import com.example.scar.ui.theme.Leaderboard
-import com.example.scar.ui.theme.LeaderboardData
-import com.example.scar.ui.theme.MatchData
-import com.example.scar.ui.theme.MatchHistory
 import com.example.scar.ui.theme.Screen
 import com.example.scar.ui.theme.cardBg2
 import com.example.scar.ui.theme.cardBgDark
@@ -91,9 +82,8 @@ fun MainMenu(navController: NavController) {
                     .height(550.dp)
                     .padding(16.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White)
-            ){
-                val matchHistoryModel: MatchHistoryViewModel = viewModel()
-                MatchHistoryUI(matchHistoryModel.matchHistoryUiState);
+            ) {
+                matchList()
             }
             Button(
                 modifier = Modifier
@@ -106,9 +96,7 @@ fun MainMenu(navController: NavController) {
                     ),
 //                    .clip(RoundedCornerShape(8.dp)),
 
-                onClick = { navController.navigate(Screen.LinkWeapon.route)
-//                    Api.setupPubnub()
-                          },
+                onClick = { navController.navigate(Screen.LinkWeapon.route)},
                 colors = ButtonDefaults.buttonColors(
                     cardBg2
 //                    Color.White
@@ -197,7 +185,25 @@ fun BottomNavigationBar(navController: NavController) {
     }
 }
 
+data class matchData(val kills: Int, val spotted : Int, val travelled : Int)
+@Composable
+fun matchList()
+{
+    val matchDataExample = remember {
+        listOf(
+            matchData(100,25,9000),
+            matchData(5,1000,200000),
+            matchData(3,123,123),
 
+            )
+    }
+
+    LazyColumn {
+        itemsIndexed(matchDataExample) { index, entry ->
+            matches(entry.kills,entry.spotted,entry.travelled)
+        }
+    }
+}
 
 @Composable
 fun matches(Kills:Int, Spotted:Int, Travelled:Int) {
@@ -388,62 +394,6 @@ fun matches(Kills:Int, Spotted:Int, Travelled:Int) {
         }
     }
 }
-}
-@Composable
-fun MatchHistoryUI(matchHistory: MatchHistoryUiState) {
-
-    when (matchHistory) {
-        is MatchHistoryUiState.Loading -> LoadingMatches()
-        is MatchHistoryUiState.Success ->
-            SuccessLoadingMatches(matchHistory.data)
-//
-
-        is MatchHistoryUiState.Error -> LoadingMatches()
-        else -> {
-            LoadingMatches()}
-    }
-}
-
-data class matchData(val kills: Int, val spotted : Int, val travelled : Int)
-@Composable
-fun LoadingMatches()
-{
-    val matchDataExample = remember {
-        listOf(
-            matchData(100,25,9000),
-            matchData(5,1000,200000),
-            matchData(3,123,123),
-
-            )
-    }
-
-    LazyColumn {
-        itemsIndexed(matchDataExample) { index, entry ->
-            matches(entry.kills,entry.spotted,entry.travelled)
-        }
-    }
-}
-
-@Composable
-fun SuccessLoadingMatches(matchInfoList: MatchData)
-{
-    Log.d("userInfoList",matchInfoList.matches.toString())
-
-
-    val matchEntryList:List<matchData> = matchInfoList.matches.map {
-        matchData(it.kills,it.spotted,it.score)
-    }
-    val matchHistoryData = remember {
-        matchEntryList
-    }
-
-    Log.d("leaderEntryList",matchEntryList.toString())
-
-    LazyColumn {
-        itemsIndexed(matchHistoryData) { index, entry ->
-            matches(entry.kills,entry.spotted,entry.travelled)
-        }
-    }
 }
 
 

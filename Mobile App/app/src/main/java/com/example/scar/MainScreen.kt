@@ -19,9 +19,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.scar.interfaces.LinkWeapon
 import com.example.scar.interfaces.MainMenu
 import com.example.scar.interfaces.Startmatch
@@ -33,6 +35,7 @@ import com.airbnb.lottie.compose.*
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.example.scar.interfaces.MatchDetails
 import kotlinx.coroutines.delay
 
 
@@ -157,6 +160,29 @@ fun Navigation()
             }){
             LinkWeapon(navController = navController)
         }
+
+        composable(route = Screen.MatchDetail.route + "/{id}",
+            arguments = listOf(navArgument("id")
+            {
+                type = NavType.IntType
+                defaultValue = 0;
+                nullable = false;
+            }),
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(700)
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(700)
+                )
+            }){entry ->
+            MatchDetails(entry.arguments?.getInt("id"), navController = navController)
+        }
+
 
     }
 

@@ -66,36 +66,6 @@ class MainActivity  : ComponentActivity() {
                 Log.d("JSON", createJson().toString())
                 // A surface container using the 'background' color from the theme
                 Navigation()
-
-//                val client = OkHttpClient()
-//
-//                val url = "https://demo5970075.mockable.io/user" // Replace with your HTTP URL
-//
-//                val request = Request.Builder()
-//                    .url(url)
-//                    .build()
-//
-//                client.newCall(request).enqueue(object : Callback {
-//                    override fun onResponse(call: Call, response: Response) {
-//                        if (response.isSuccessful) {
-//                            val responseBody = response.body()?.string()
-//                            println(responseBody)
-//                            Log.d("success",responseBody.toString())
-//
-//                        } else {
-//                            println("Request failed with code: ${response.code()}")
-//                            Log.d("fail",response.code().toString())
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call, e: IOException) {
-//                        e.printStackTrace()
-//                        Log.d("fail",e.printStackTrace().toString())
-//
-//                    }
-//                })
-
-
             }
         }
     }

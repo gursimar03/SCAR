@@ -18,6 +18,7 @@ package com.example.scar.network
 
 import Success
 import android.util.Log
+import com.example.scar.ui.theme.GunData
 import com.example.scar.ui.theme.LeaderboardData
 import com.example.scar.ui.theme.MatchData
 import com.example.scar.ui.theme.User
@@ -30,11 +31,11 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.GET
 
-private const val BASE_URL =
-    "https://scarsd3b.online/"
-
 //private const val BASE_URL =
-//    "https://demo5970075.mockable.io/"
+//    "https://scarsd3b.online/"
+
+private const val BASE_URL =
+    "https://demo5970075.mockable.io/"
 
 /**
  * Use the Retrofit builder to build a retrofit object using a kotlinx.serialization converter
@@ -54,11 +55,19 @@ interface ApiService{
     @GET("api/get/testing")
     suspend fun getTests(): Success
 
-    @GET("api/leaderboard")
+//    @GET("api/leaderboard")
+//    suspend fun getPlayers(): LeaderboardData
+    @GET("leaderboard")
     suspend fun getPlayers(): LeaderboardData
 
-    @GET("api/get/match_history/1")
+//    @GET("api/get/match_history/1")
+//    suspend fun getMatches(): MatchData
+
+    @GET("match_history")
     suspend fun getMatches(): MatchData
+
+    @GET("weapons")
+    suspend fun getGuns(): GunData
 
     @GET("api/get/setup-pubnub")
     fun setupPubnub(): Call<Void>

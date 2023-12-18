@@ -19,14 +19,14 @@ package com.example.scar.data
 import com.example.scar.ui.theme.Gun
 import kotlinx.coroutines.flow.Flow
 
-class OfflineGunRepository(private val gunDao: GunDao) : GunRepository {
-    override fun getAllGunStream(): Flow<List<Gun>> = gunDao.getAllItems()
-
-    override fun getGunStream(id: Int): Flow<Gun?> = gunDao.getItem(id)
-
-    override suspend fun insertGun(item: Gun) = gunDao.insert(item)
-
-    override suspend fun deleteGun(item: Gun) = gunDao.delete(item)
-
-    override suspend fun updateGun(item: Gun) = gunDao.update(item)
-}
+//class OfflineGunRepository(private val gunDao: GunDao) : GunRepository {
+//    override fun getAllGunStream(): Flow<List<Gun>> = gunDao.getAllItems()
+//
+//    override fun getGunStream(id: Int): Flow<Gun?> = gunDao.getItem(id)
+//
+//    override suspend fun insertGun(item: Gun) = gunDao.insert(item)
+//
+//    override suspend fun deleteGun(item: Gun) = gunDao.delete(item)
+//
+//    override suspend fun updateGun(item: Gun) = gunDao.update(item)
+//}

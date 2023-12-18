@@ -93,7 +93,7 @@ fun MainMenu(navController: NavController) {
                 colors = CardDefaults.cardColors(containerColor = Color.White)
             ){
                 val matchHistoryModel: MatchHistoryViewModel = viewModel()
-                MatchHistoryUI(matchHistoryModel.matchHistoryUiState);
+                MatchHistoryUI(matchHistoryModel.matchHistoryUiState, navController);
             }
             Button(
                 modifier = Modifier
@@ -200,7 +200,7 @@ fun BottomNavigationBar(navController: NavController) {
 
 
 @Composable
-fun matches(Kills:Int, Spotted:Int, Travelled:Int) {
+fun matches(Kills:Int, Spotted:Int, Travelled:Int, Date:String, navController: NavController, matchID:Int) {
     Card(
         modifier = Modifier
 //                    .fillMaxSize()
@@ -212,7 +212,7 @@ fun matches(Kills:Int, Spotted:Int, Travelled:Int) {
             ),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {    Text(
-        text = "Date",
+        text = Date,
         style = TextStyle(color = Color.Black, fontSize = 30.sp),
         fontFamily = FontFamily(
             Font(R.font.montserrat_bold, weight = FontWeight.Normal)
@@ -378,8 +378,10 @@ fun matches(Kills:Int, Spotted:Int, Travelled:Int) {
                     }
                 }
                                             Spacer(modifier = Modifier.height(35.dp))
-
-                            Button(onClick = { /*TODO*/ }) {
+                            Log.d("ID", matchID.toString())
+                            Button(onClick = {
+                                navController.navigate(Screen.MatchDetail.withArgs(matchID.toString()))
+                            }) {
                                 Icon( Icons.Rounded.KeyboardArrowDown, contentDescription ="Show More" )
 
                             }
@@ -390,48 +392,48 @@ fun matches(Kills:Int, Spotted:Int, Travelled:Int) {
 }
 }
 @Composable
-fun MatchHistoryUI(matchHistory: MatchHistoryUiState) {
+fun MatchHistoryUI(matchHistory: MatchHistoryUiState, navController: NavController) {
 
     when (matchHistory) {
-        is MatchHistoryUiState.Loading -> LoadingMatches()
+        is MatchHistoryUiState.Loading -> LoadingMatches(navController)
         is MatchHistoryUiState.Success ->
-            SuccessLoadingMatches(matchHistory.data)
+            SuccessLoadingMatches(matchHistory.data, navController)
 //
 
-        is MatchHistoryUiState.Error -> LoadingMatches()
+        is MatchHistoryUiState.Error -> LoadingMatches(navController)
         else -> {
-            LoadingMatches()}
+            LoadingMatches(navController)}
     }
 }
 
-data class matchData(val kills: Int, val spotted : Int, val travelled : Int)
+data class matchData(val kills: Int, val spotted : Int, val travelled : Int, val date:String, val matchID: Int)
 @Composable
-fun LoadingMatches()
+fun LoadingMatches(navController: NavController)
 {
     val matchDataExample = remember {
         listOf(
-            matchData(100,25,9000),
-            matchData(5,1000,200000),
-            matchData(3,123,123),
+            matchData(100,25,9000, "2023-11-21",1),
+            matchData(5,1000,200000, "2023-11-21",2),
+            matchData(3,123,123, "2023-11-21",3),
 
             )
     }
 
     LazyColumn {
         itemsIndexed(matchDataExample) { index, entry ->
-            matches(entry.kills,entry.spotted,entry.travelled)
+            matches(entry.kills,entry.spotted,entry.travelled,entry.date,navController,entry.matchID)
         }
     }
 }
 
 @Composable
-fun SuccessLoadingMatches(matchInfoList: MatchData)
+fun SuccessLoadingMatches(matchInfoList: MatchData, navController: NavController)
 {
     Log.d("userInfoList",matchInfoList.matches.toString())
 
 
     val matchEntryList:List<matchData> = matchInfoList.matches.map {
-        matchData(it.kills,it.spotted,it.score)
+        matchData(it.kills,it.spotted,it.travelled,it.date,it.matchID)
     }
     val matchHistoryData = remember {
         matchEntryList
@@ -441,7 +443,7 @@ fun SuccessLoadingMatches(matchInfoList: MatchData)
 
     LazyColumn {
         itemsIndexed(matchHistoryData) { index, entry ->
-            matches(entry.kills,entry.spotted,entry.travelled)
+            matches(entry.kills,entry.spotted,entry.travelled,entry.date,navController,entry.matchID)
         }
     }
 }

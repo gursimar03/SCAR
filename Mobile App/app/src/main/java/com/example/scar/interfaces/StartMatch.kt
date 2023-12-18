@@ -16,9 +16,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,15 +50,12 @@ import com.example.scar.ui.theme.textBg
 
 //sources
 ///https://stackoverflow.com/questions/72794300/is-there-a-way-to-filter-the-exposed-dropdown-menu-options-depending-on-the-valu/72795638#72795638
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Startmatch(navController: NavController) {
+    var arena by remember { mutableStateOf("Dundalk Arena") }
+
     Surface(modifier = Modifier.fillMaxSize()) {
-//        Image(
-//            painter = painterResource(id = R.drawable.background),
-//            contentDescription = "bg",
-//            contentScale = ContentScale.FillBounds,
-//            modifier = Modifier.fillMaxWidth()
-//        )
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -74,11 +73,11 @@ fun Startmatch(navController: NavController) {
 //                        spotColor = Color.Green,
                         elevation = 8.dp,
                     ),
-                colors = CardDefaults.cardColors(containerColor = cardBg2.copy(alpha = 0.8f))
+                colors = CardDefaults.cardColors(Color.White)
             ) {
                 Text(
                     text = "Configuration",
-                    style = TextStyle(color= Color.White, fontSize = 30.sp),
+                    style = TextStyle(color= Color.Black, fontSize = 30.sp),
                     fontFamily= FontFamily(
                         Font(R.font.montserrat_bold,weight= FontWeight.Normal)
                     ),
@@ -118,8 +117,12 @@ fun Startmatch(navController: NavController) {
                                     modifier = Modifier.padding(15.dp))
                             }
 
-                            Spacer(modifier = Modifier.width(80.dp))
 //                            SwitchMinimalExample()
+                            TextField(
+                                value = arena,
+                                onValueChange = { arena = it },
+
+                            )
                         }
                     }
                     Spacer(modifier = Modifier.height(30.dp))
@@ -285,9 +288,9 @@ fun Succeed(testList: LeaderboardData){
     Log.d("Players",players.toString())
 
     // Print the player infor  mation
-    players.forEach { player ->
-        println("Leaderboard ID: ${player.leaderboardID}, User ID: ${player.userID}")
-    }
+//    players.forEach { player ->
+//        println("Leaderboard ID: ${player.leaderboardID}, User ID: ${player.userID}")
+//    }
 
 }
 fun Loading2() {

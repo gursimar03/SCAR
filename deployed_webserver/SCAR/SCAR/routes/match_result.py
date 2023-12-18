@@ -52,4 +52,42 @@ def get_user_inventory(user_id):
         return jsonify({'success': True, 'data': data}), 200
 
     except Exception as e:
+
         return jsonify({'success': False, 'error': str(e)}), 500
+
+# Route to get the users gps location history throughout the match
+@match_result_bp.route('/api/get/gps_history', methods=['GET'])
+def get_gps_history():
+	try:
+		data = request.json
+		user_id = data.get('user_id')
+		match_id = data.get('match_id')
+
+		gps_history = MatchResult.query.filter_by(user_id=user_id, match_id=match_id, status="finished").all()
+  
+		
+		data = [{'match_id': gps.match_id, 'user_id': gps.user_id, 'gps_data': gps.gps_data}
+				for gps in gps_history]
+
+		return jsonify({'success': True, 'data': data}), 200
+
+	except Exception as e:
+		return jsonify({'success': False, 'error': str(e)}), 500
+
+
+# Route to update the match status to finished
+@match_result_bp.route('/api/post/match_status', methods=['POST'])
+def post_match_status():
+	try:
+		data = request.json
+		match_id = data.get('match_id')
+
+		match_status = MatchResult.query.filter_by(match_id=match_id).first()
+		match_status.status = "finished"
+		db.session.commit()
+
+		return jsonify({'success': True}), 200
+
+	except Exception as e:
+		return jsonify({'success': False, 'error': str(e)}), 500
+

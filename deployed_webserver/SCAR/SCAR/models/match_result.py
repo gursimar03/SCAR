@@ -8,3 +8,4 @@ class MatchResult(db.Model):
     enemies_spotted = db.Column(db.Integer)
     kills = db.Column(db.Integer)
     score = db.Column(db.Integer)
+    status = db.Column(db.String(20), default='in_progress')

@@ -38,6 +38,7 @@ import com.example.scar.screens.LeaderboardUiState
 import com.example.scar.screens.LeaderboardViewModel
 import com.example.scar.screens.PlayerUiState
 import com.example.scar.screens.PlayerViewModel
+import com.example.scar.ui.theme.Data
 import com.example.scar.ui.theme.Leaderboard
 import com.example.scar.ui.theme.Player
 import com.example.scar.ui.theme.Screen
@@ -54,15 +55,10 @@ import kotlin.math.min
 data class LeaderboardEntry(val name: String, val score: Int)
 
 @Composable
-fun leaderboard(modifier: Modifier = Modifier, navController: NavController, region:String?){
-    Surface(modifier = Modifier.fillMaxSize(),
-        color = mainBg // Set the desired background color here
+fun leaderboard(modifier: Modifier = Modifier, navController: NavController, region: String?) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
     ) {
-        Image(painter = painterResource(id = R.drawable.background),
-            contentDescription = "bg",
-            contentScale = ContentScale.FillBounds,
-            modifier=Modifier.fillMaxWidth())
-
         Column {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -233,18 +229,20 @@ fun leaderboard(modifier: Modifier = Modifier, navController: NavController, reg
             }
             Row(
                 modifier = Modifier
-                    .height(385.dp) // Use weight to make this row take the remaining available space
+                    .height(385.dp)
+                    .padding(16.dp)
             ) {
                 // Your LeaderboardUI content
-                val leaderboardViewModel: LeaderboardViewModel = viewModel()
-                LeaderboardUI(leaderboardUiState = leaderboardViewModel.leaderboardUiState)
-//                val playerViewModel: PlayerViewModel = viewModel()
-//                LeaderboardUI(playerUiState = playerViewModel.playerUiState)
+//                val leaderboardViewModel: LeaderboardViewModel = viewModel()
+//                LeaderboardUI(leaderboardUiState = leaderboardViewModel.leaderboardUiState)
+                val playerViewModel: PlayerViewModel = viewModel()
+                LeaderboardUI(playerUiState = playerViewModel.playerUiState)
+
             }
             Row(
                 modifier = Modifier
                     .weight(1f)
-            ) {
+            )  {
                 // LeaderboardItem content
                 LeaderboardItem(entry = LeaderboardEntry("You", 123), isGold = false, 999)
             }
@@ -291,18 +289,14 @@ fun LeaderboardScreen(leaderboardData: List<LeaderboardEntry>) {
                 LeaderboardItem(entry = entry, isGold = index < 3, index)
             }
         }
-//        Spacer(modifier = Modifier.height(40.dp))
-
-
     }
 
 }
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
-fun LeaderboardItem(entry: LeaderboardEntry, isGold: Boolean, index:Int) {
+fun LeaderboardItem(entry: LeaderboardEntry, isGold: Boolean, index: Int) {
     val alpha = if (isGold) {
-        // Assuming you want the alpha to increase for the first three items
         val maxAlpha = 0.9f
         val minAlpha = 0.3f
         val alphaStep = (maxAlpha - minAlpha) / 3
@@ -316,123 +310,70 @@ fun LeaderboardItem(entry: LeaderboardEntry, isGold: Boolean, index:Int) {
         isGold && index < 3 -> Color(0xFFFFD700).copy(alpha = alpha) // Gold color for first three items
         index == 999 -> Color.Blue // Dark blue for index 999
         else -> userBg // Your default background color
-    }  // Use gold color for the first three items
+    }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clip(RoundedCornerShape(70)),
+            .clip(RoundedCornerShape(16.dp)), // Adjusted corner radius
         colors = CardDefaults.cardColors(containerColor = backgroundColor)
     ) {
-        Box(
+        Row(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp)
-                .height(45.dp)
-                .shadow(
-                    shape = RoundedCornerShape(70),
-                    spotColor = Color.White,
-                    elevation = 30.dp,
-                ),
-
+                .fillMaxWidth()
+                .padding(16.dp), // Adjusted padding
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            // Your existing content
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-
-            ) {
-                Text(text = entry.name,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontSize = 20.sp,
-                    color = Color.White,
-                    fontFamily= FontFamily(
-                        Font(R.font.montserrat_regular,weight= FontWeight.Normal)
-                    )
-                )
-                Text(text = entry.score.toString(),
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontSize = 20.sp,
-                    color = Color.White,
-                    fontFamily= FontFamily(
-                        Font(R.font.montserrat_regular,weight= FontWeight.Normal)
-                    )
-                )
-            }
-
-            // Additional content (you can customize this)
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(end = 16.dp)
-            ) {
-            }
+            Text(
+                text = entry.name,
+                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 20.sp,
+                color = Color.White,
+                fontFamily = FontFamily(
+                    Font(R.font.montserrat_regular, weight = FontWeight.Normal)
+                ),
+                modifier = Modifier.weight(1f) // Adjusted weight
+            )
+            Text(
+                text = entry.score.toString(),
+                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 20.sp,
+                color = Color.White,
+                fontFamily = FontFamily(
+                    Font(R.font.montserrat_regular, weight = FontWeight.Normal)
+                ),
+                modifier = Modifier.weight(1f) // Adjusted weight
+            )
         }
     }
 }
-//
-//@Composable
-//fun LeaderboardUI(playerUiState: PlayerUiState) {
-//
-//    when (playerUiState) {
-//        is PlayerUiState.Loading -> Loading()
-//        is PlayerUiState.Success ->
-//           Success(playerUiState.users)
-//
-//
-//        is PlayerUiState.Error -> Loading()
-//        else -> {
-//            Loading()}
-//    }
-//}
-//
-//@Composable
-//fun Success(userInfoList: List<Player>){
-//    val leaderboardViewModel: LeaderboardViewModel = viewModel()
-//
-//    Log.d("userInfoList",userInfoList.toString())
-//
-//
-//    val leaderEntryList:List<LeaderboardEntry> = userInfoList.map {
-//        LeaderboardEntry(it.leaderboardID.toString(),it.userID)
-//    }
-//    val leaderboardData = remember {
-//            leaderEntryList
-//    }
-//
-//    Log.d("leaderEntryList",leaderEntryList.toString())
-//
-//    LeaderboardScreen(leaderboardData = leaderboardData)
-//}
 
-
-
+//
 @Composable
-fun LeaderboardUI(leaderboardUiState: LeaderboardUiState) {
+fun LeaderboardUI(playerUiState: PlayerUiState) {
 
-    when (leaderboardUiState) {
-        is LeaderboardUiState.Loading -> Loading()
-        is LeaderboardUiState.Success ->
-           Success(leaderboardUiState.users)
+    when (playerUiState) {
+        is PlayerUiState.Loading -> Loading()
+        is PlayerUiState.Success ->
+           Success(playerUiState.users)
 
 
-        is LeaderboardUiState.Error -> Loading()
+        is PlayerUiState.Error -> Loading()
         else -> {
             Loading()}
     }
 }
 
 @Composable
-fun Success(userInfoList: List<User>){
+fun Success(userInfoList: Data){
     val leaderboardViewModel: LeaderboardViewModel = viewModel()
 
-    Log.d("userInfoList",userInfoList.toString())
+    Log.d("userInfoList",userInfoList.players.toString())
 
 
-    val leaderEntryList:List<LeaderboardEntry> = userInfoList.map {
-        LeaderboardEntry(it.username, calculateScore(it.kills, it.spots, it.accuracy, it.travelled))
+    val leaderEntryList:List<LeaderboardEntry> = userInfoList.players.map {
+        LeaderboardEntry(it.leaderboardID.toString(),it.userID)
     }
     val leaderboardData = remember {
             leaderEntryList
@@ -442,14 +383,44 @@ fun Success(userInfoList: List<User>){
 
     LeaderboardScreen(leaderboardData = leaderboardData)
 }
-@Composable
-fun Loading(){
+
+
+
+//@Composable
+//fun LeaderboardUI(leaderboardUiState: LeaderboardUiState) {
+//
+//    when (leaderboardUiState) {
+//        is LeaderboardUiState.Loading -> Loading()
+//        is LeaderboardUiState.Success ->
+//           Success(leaderboardUiState.users)
+//
+//
+//        is LeaderboardUiState.Error -> Loading()
+//        else -> {
+//            Loading()}
+//    }
+//}
+//
+//@Composable
+//fun Success(userInfoList: List<User>){
 //    val leaderboardViewModel: LeaderboardViewModel = viewModel()
-
-//    val userInfoList = leaderboardViewModel.leaderboardData
+//
 //    Log.d("userInfoList",userInfoList.toString())
-
-//    val leaderEntryList:List<LeaderboardEntry>
+//
+//
+//    val leaderEntryList:List<LeaderboardEntry> = userInfoList.map {
+//        LeaderboardEntry(it.username, calculateScore(it.kills, it.spots, it.accuracy, it.travelled))
+//    }
+//    val leaderboardData = remember {
+//            leaderEntryList
+//    }
+//
+//    Log.d("leaderEntryList",leaderEntryList.toString())
+//
+//    LeaderboardScreen(leaderboardData = leaderboardData)
+//}
+@Composable
+fun Loading() {
     val leaderboardData = remember {
         listOf(
             LeaderboardEntry("user 1", 500),
@@ -461,11 +432,9 @@ fun Loading(){
             LeaderboardEntry("user 7", 550),
         )
     }
-//    Log.d("leaderEntryList",leaderEntryList.toString())
 
     LeaderboardScreen(leaderboardData = leaderboardData)
 }
-
 
 
 

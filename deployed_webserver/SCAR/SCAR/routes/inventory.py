@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from SCAR.app_factory import db
-from SCAR.models import inventory
+from SCAR.models.inventory import Inventory
 
 inventory_bp = Blueprint('inventory_bp', __name__)
 

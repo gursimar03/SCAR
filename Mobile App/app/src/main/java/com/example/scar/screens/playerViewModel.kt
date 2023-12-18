@@ -15,21 +15,17 @@
  */
 package com.example.scar.screens
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.scar.data.GunRepository
 //import com.example.marsphotos.model.MarsPhoto
 //import com.example.marsphotos.network.MarsApi
 import com.example.scar.network.Api
 import com.example.scar.ui.theme.Data
-import com.example.scar.ui.theme.Player
-import com.example.scar.ui.theme.User
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -42,10 +38,9 @@ sealed interface PlayerUiState {
     object Loading : PlayerUiState
 }
 
-class PlayerViewModel : ViewModel() {
+class PlayerViewModel() : ViewModel() {
     /** The mutable State that stores the status of the most recent request */
 
-//    var leaderboardData by mutableStateOf<List<User>>(emptyList())
     //        private set
     var playerUiState: PlayerUiState by mutableStateOf(PlayerUiState.Loading)
         private set
@@ -66,9 +61,12 @@ class PlayerViewModel : ViewModel() {
             playerUiState = PlayerUiState.Loading
             playerUiState= try {
                 val newData = Api.retrofitService.getPlayers()
+
                 PlayerUiState.Success(
                     newData
                 )
+
+
             } catch (e: IOException) {
                 PlayerUiState.Error
             } catch (e: HttpException) {

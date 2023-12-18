@@ -25,9 +25,7 @@ import androidx.lifecycle.viewModelScope
 //import com.example.marsphotos.network.MarsApi
 import com.example.scar.network.Api
 import com.example.scar.ui.theme.User
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -40,7 +38,7 @@ sealed interface LeaderboardUiState {
     object Loading : LeaderboardUiState
 }
 
-class LeaderboardViewModel : ViewModel() {
+class LeaderboardViewModel() : ViewModel() {
     /** The mutable State that stores the status of the most recent request */
 
     var leaderboardData by mutableStateOf<List<User>>(emptyList())
@@ -64,13 +62,10 @@ var leaderboardUiState: LeaderboardUiState by mutableStateOf(LeaderboardUiState.
             leaderboardUiState = LeaderboardUiState.Loading
             leaderboardUiState= try {
                 val newData = Api.retrofitService.getUsers()
-//                Log.d("newData", newData.toString())
+                Log.d("newData", newData.toString())
                 LeaderboardUiState.Success(
                     newData
                 )
-//                withContext(Dispatchers.Main) {
-//                    leaderboardData = newData
-//                }
             } catch (e: IOException) {
 //                Log.e("error", "IOException: ${e.message}", e)
                 LeaderboardUiState.Error

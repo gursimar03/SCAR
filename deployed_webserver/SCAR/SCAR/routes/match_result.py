@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from SCAR.app_factory import db
-from SCAR.models import match_result
+from SCAR.models.match_result import MatchResult
 
 match_result_bp = Blueprint('match_result_bp', __name__)
 
@@ -36,24 +36,23 @@ def post_match_result():
         db.session.rollback()
         return jsonify({'success': False, 'error': str(e)}), 500
 
-@match_result_bp.route('/api/get/match_history', methods=['GET'])
-def get_match_history():
-    try:
-        data = request.json
-        user_id = data.get('user_id')
 
-        # Add your get match history logic here, including retrieving the match history from the database
+@match_result_bp.route('/api/get/match_history/<int:user_id>', methods=['GET'])
+def get_user_inventory(user_id):
+    try:
+        # Retrieve inventory for a specific user
         match_history = MatchResult.query.filter_by(user_id=user_id).all()
 
-        # Convert the match history to a format you want to return
+        # Convert the inventory to a format you want to return
         data = [{'match_id': match.match_id, 'user_id': match.user_id, 'weapon_id': match.weapon_id,
-                 'arena_id': match.arena_id, 'enemies_spotted': match.enemies_spotted,
-                 'kills': match.kills, 'deaths': match.deaths, 'score': match.score}
-                for match in match_history]
+         'arena_id': match.arena_id, 'enemies_spotted': match.enemies_spotted,
+         'kills': match.kills, 'score': match.score}
+        for match in match_history]
 
         return jsonify({'success': True, 'data': data}), 200
 
     except Exception as e:
+
         return jsonify({'success': False, 'error': str(e)}), 500
 
 # Route to get the users gps location history throughout the match
@@ -91,3 +90,4 @@ def post_match_status():
 
 	except Exception as e:
 		return jsonify({'success': False, 'error': str(e)}), 500
+

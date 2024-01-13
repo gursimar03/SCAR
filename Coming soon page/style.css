@@ -509,7 +509,7 @@ body {
   .content__container:after, .content__container:before {
     position: absolute;
     top: 0;
-    color: #16a085;
+    color: #dee114;
     font-size: 42px;
     line-height: 40px;
     -webkit-animation-name: opacity;
@@ -634,7 +634,7 @@ body {
     top: 0;
     height: 100%;
     width: 51%;
-    background: #fff;
+    background: rgb(212, 233, 23);
   }
   
   .chevron:before {

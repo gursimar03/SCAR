@@ -1,10 +1,13 @@
 from flask import Blueprint, jsonify, request
 from SCAR.app_factory import db
 from SCAR.models.arena  import Arena
+from SCAR.__init__ import require_auth
 
 arena_bp = Blueprint('arena_bp', __name__)
 
+
 @arena_bp.route('/api/get/arenas', methods=['GET'])
+@require_auth
 def get_arenas():
     try:
         # Retrieve all arenas
@@ -19,6 +22,7 @@ def get_arenas():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @arena_bp.route('/api/post/arena', methods=['POST'])
+@require_auth
 def post_arena():
     try:
         data = request.json

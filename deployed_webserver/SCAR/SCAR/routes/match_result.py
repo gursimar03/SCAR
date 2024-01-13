@@ -1,10 +1,12 @@
 from flask import Blueprint, jsonify, request
 from SCAR.app_factory import db
 from SCAR.models.match_result import MatchResult
+from SCAR.__init__ import require_auth
 
 match_result_bp = Blueprint('match_result_bp', __name__)
 
 @match_result_bp.route('/api/post/match_result', methods=['POST'])
+@require_auth
 def post_match_result():
     try:
         data = request.json
@@ -38,6 +40,7 @@ def post_match_result():
 
 
 @match_result_bp.route('/api/get/match_history/<int:user_id>', methods=['GET'])
+@require_auth
 def get_user_inventory(user_id):
     try:
         # Retrieve inventory for a specific user
@@ -57,6 +60,7 @@ def get_user_inventory(user_id):
 
 # Route to get the users gps location history throughout the match
 @match_result_bp.route('/api/get/gps_history', methods=['GET'])
+@require_auth
 def get_gps_history():
 	try:
 		data = request.json
@@ -77,6 +81,7 @@ def get_gps_history():
 
 # Route to update the match status to finished
 @match_result_bp.route('/api/post/match_status', methods=['POST'])
+@require_auth
 def post_match_status():
 	try:
 		data = request.json

@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from SCAR.app_factory import db
 from SCAR.models.leaderboard import Leaderboard
+from SCAR.__init__ import require_auth
 
 leaderboard_bp = Blueprint('leaderboard_bp', __name__)
 
@@ -29,6 +30,7 @@ def get_leaderboard_entry(leaderboard_id):
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @leaderboard_bp.route('/api/leaderboard', methods=['POST'])
+@require_auth
 def create_leaderboard_entry():
     try:
         data = request.json
@@ -43,6 +45,7 @@ def create_leaderboard_entry():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @leaderboard_bp.route('/api/leaderboard/<int:leaderboard_id>', methods=['PUT'])
+@require_auth
 def update_leaderboard_entry(leaderboard_id):
     try:
         entry = Leaderboard.query.get(leaderboard_id)
@@ -60,6 +63,7 @@ def update_leaderboard_entry(leaderboard_id):
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @leaderboard_bp.route('/api/leaderboard/<int:leaderboard_id>', methods=['DELETE'])
+@require_auth
 def delete_leaderboard_entry(leaderboard_id):
     try:
         entry = Leaderboard.query.get(leaderboard_id)

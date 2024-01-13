@@ -1,10 +1,12 @@
 from flask import Blueprint, jsonify, request
 from SCAR.app_factory import db
 from SCAR.models.weapon import Weapon
+from SCAR.__init__ import require_auth
 
 weapon_bp = Blueprint('weapon_bp', __name__)
 
 @weapon_bp.route('/api/get/weapons/', methods=['GET'])
+@require_auth
 def get_weapons():
     try:
         # Add your get weapons logic here, including retrieving the weapons from the database
@@ -20,6 +22,7 @@ def get_weapons():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @weapon_bp.route('/api/post/weapon', methods=['POST'])
+@require_auth
 def post_weapon():
     try:
         data = request.json

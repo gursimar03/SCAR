@@ -12,6 +12,7 @@ class User(db.Model):
     username = db.Column(db.String(50), nullable=False)
     age = db.Column(db.Integer)
     access_level = db.Column(db.Integer, default=0)
+    token = db.Column(db.String(255), nullable=False)
 
     # Relationships
     sessions = db.relationship('Session', backref='user', lazy=True)

@@ -1,4 +1,5 @@
-from flask import render_template , jsonify
+from flask import render_template , jsonify, request
+from functools import wraps
 from SCAR.app_factory import create_app
 from SCAR.auth.user import user_bp
 from SCAR.routes.arena import arena_bp
@@ -7,8 +8,24 @@ from SCAR.routes.match_result import match_result_bp
 from SCAR.routes.leaderboard import leaderboard_bp
 from SCAR.routes.weapon import weapon_bp
 from SCAR.routes.pn_routes import pb_route
+from SCAR.models.user import User
 
-import os 
+import os
+
+def require_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth_header = request.headers.get('Authorization')
+        if not auth_header:
+            return jsonify({'success': False, 'error': 'Missing Authorization header'}), 401
+        
+        # Check the flask.current_user object to see if the user is logged in and has a valid token
+        token = auth_header.split(' ')[1]
+        user = User.query.filter_by(token=token).first()
+        if not user or not token:
+            return jsonify({'success': False, 'error': 'Invalid Authorization'}), 403
+        return f(*args, **kwargs)
+    return decorated
 
 app, db = create_app()
 

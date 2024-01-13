@@ -19,7 +19,6 @@ def require_auth(f):
         if not auth_header:
             return jsonify({'success': False, 'error': 'Missing Authorization header'}), 401
         
-        # Check the flask.current_user object to see if the user is logged in and has a valid token
         token = auth_header.split(' ')[1]
         user = User.query.filter_by(token=token).first()
         if not user or not token:

@@ -67,9 +67,7 @@ def login_user():
 
     if user is None or not bcrypt.check_password_hash(user.password, password):
         return jsonify({'success': False, 'message': 'Invalid email or password'}), 401
-
-    flask.current_user = user
-
+    
     return jsonify({
         'success': True,
         'user_id': user.user_id,

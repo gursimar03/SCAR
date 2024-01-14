@@ -18,10 +18,13 @@ package com.example.scar.network
 
 import Success
 import android.util.Log
+import com.example.scar.ui.theme.Global
 import com.example.scar.ui.theme.GunData
 import com.example.scar.ui.theme.LeaderboardData
 import com.example.scar.ui.theme.MatchData
 import com.example.scar.ui.theme.User
+import com.example.scar.ui.theme.UserInfo
+import com.example.scar.ui.theme.UserTokens
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -29,13 +32,18 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.http.Body
 import retrofit2.http.GET
-
-//private const val BASE_URL =
-//    "https://scarsd3b.online/"
+import retrofit2.http.Header
+import retrofit2.http.Headers
+import retrofit2.http.POST
+import retrofit2.http.Path
 
 private const val BASE_URL =
-    "https://demo5970075.mockable.io/"
+    "https://scarsd3b.online/"
+
+//private const val BASE_URL =
+//    "https://demo5970075.mockable.io/"
 
 /**
  * Use the Retrofit builder to build a retrofit object using a kotlinx.serialization converter
@@ -55,24 +63,43 @@ interface ApiService{
     @GET("api/get/testing")
     suspend fun getTests(): Success
 
+
 //    @GET("api/leaderboard")
 //    suspend fun getPlayers(): LeaderboardData
-    @GET("leaderboard")
-    suspend fun getPlayers(): LeaderboardData
 
-//    @GET("api/get/match_history/1")
-//    suspend fun getMatches(): MatchData
+    @GET("api/leaderboard")
+    suspend fun getPlayers(@Header("User-Key") userToken: String): LeaderboardData
 
-    @GET("match_history")
+
+    @GET("api/get/match_history/1")
     suspend fun getMatches(): MatchData
 
-    @GET("weapons")
+    @Headers("Admin-key:08eff29c780d53adc819e095b2b0f0fdbe88862cafafc9523642124cc5492672")
+    @GET("api/get_user_token/{username}")
+    fun getToken(@Path("username")username:String): Call<UserTokens>
+
+//    @GET("match_history")
+//    suspend fun getMatches(): MatchData
+
+    @GET("api/get/weapons/1")
     suspend fun getGuns(): GunData
 
     @GET("api/get/setup-pubnub")
     fun setupPubnub(): Call<Void>
-    @GET("api/get/start-config/1/1")
-    fun sendConfig(): Call<Void>
+
+    @Headers("Admin-key:08eff29c780d53adc819e095b2b0f0fdbe88862cafafc9523642124cc5492672")
+    @POST("/api/register")
+    fun postData(@Body dataModel: UserInfo?): Call<UserInfo?>?
+
+
+
+    //    @GET("api/get/start-config/1/1")
+//    fun sendConfig(): Call<Void>
+    @GET("api/get/start-config/{highlight}/{LED}")
+    fun sendConfig(
+        @Path("highlight")highlight:Int,
+        @Path("LED")LED:Int
+    ): Call<Void>
 }
 
 /**
@@ -97,8 +124,10 @@ object Api {
         }
     }
 
+
+
     fun sendConfig() {
-        val call = retrofitService.sendConfig()
+        val call = retrofitService.sendConfig(Global.highlight,Global.LED)
 
         call.enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
@@ -114,4 +143,5 @@ object Api {
             }
         })
     }
+
 }

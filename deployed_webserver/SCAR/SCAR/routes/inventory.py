@@ -8,7 +8,7 @@ inventory_bp = Blueprint('inventory_bp', __name__)
 def get_user_inventory(user_id):
     try:
         # Retrieve inventory for a specific user
-        user_inventory = Inventory.query.filter_by(user_id=user_id).all()
+        user_inventory = inventory.query.filter_by(user_id=user_id).all()
 
         # Convert the inventory to a format you want to return
         data = [{'user_id': entry.user_id, 'weapon_id': entry.weapon_id} for entry in user_inventory]
@@ -26,7 +26,7 @@ def post_user_inventory():
         weapon_id = data.get('weapon_id')
 
         # Add your post inventory logic here, including storing the inventory in the database
-        new_inventory_entry = Inventory(user_id=user_id, weapon_id=weapon_id)
+        new_inventory_entry = inventory(user_id=user_id, weapon_id=weapon_id)
         db.session.add(new_inventory_entry)
         db.session.commit()
 
@@ -44,7 +44,7 @@ def delete_user_inventory():
         weapon_id = data.get('weapon_id')
 
         # Add your delete inventory logic here, including removing the inventory entry from the database
-        inventory_entry = Inventory.query.filter_by(user_id=user_id, weapon_id=weapon_id).first()
+        inventory_entry = inventory.query.filter_by(user_id=user_id, weapon_id=weapon_id).first()
 
         if inventory_entry:
             db.session.delete(inventory_entry)

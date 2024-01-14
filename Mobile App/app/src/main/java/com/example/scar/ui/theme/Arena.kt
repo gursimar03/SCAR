@@ -10,6 +10,6 @@ data class Arena(
 //                        @SerialName(value = "arena_id") val leaderboardID: Int,
     @SerialName(value = "arena_id")  val arenaID: Int,
     @SerialName(value = "arena_name")  val arena_name: String,
-    @SerialName(value = "geofence")  val fence: Geofence,
+//    @SerialName(value = "geofence")  val fence: Geofence,
     )
 

@@ -5,4 +5,6 @@ class Arena(db.Model):
     arena_name = db.Column(db.String(50), nullable=False)
 
     # Relationships
-    match_results = db.relationship('MatchResult', backref='arena', lazy=True)
+    # match_results = db.relationship('MatchResult', backref='matches', lazy=True)
+
+

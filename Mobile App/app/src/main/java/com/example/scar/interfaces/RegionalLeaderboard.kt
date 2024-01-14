@@ -359,7 +359,7 @@ fun LeaderboardUI(playerUiState: PlayerUiState) {
 
 @Composable
 fun Success(userInfoList: LeaderboardData){
-    val leaderboardViewModel: LeaderboardViewModel = viewModel()
+//    val leaderboardViewModel: LeaderboardViewModel = viewModel()
 
     Log.d("userInfoList",userInfoList.players.toString())
 

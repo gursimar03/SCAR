@@ -42,8 +42,10 @@ import com.example.scar.R
 import com.example.scar.network.Api
 import com.example.scar.screens.PlayerUiState
 import com.example.scar.screens.PlayerViewModel
+import com.example.scar.ui.theme.Global
 import com.example.scar.ui.theme.LeaderboardData
 import com.example.scar.ui.theme.Player
+import com.example.scar.ui.theme.Screen
 import com.example.scar.ui.theme.cardBg2
 import com.example.scar.ui.theme.cardBgDark
 import com.example.scar.ui.theme.textBg
@@ -150,7 +152,7 @@ fun Startmatch(navController: NavController) {
                             }
 
                             Spacer(modifier = Modifier.width(80.dp))
-                            SwitchMinimalExample()
+                            SwitchMinimalExample("GPS")
                         }
                     }
                     Spacer(modifier = Modifier.height(30.dp))
@@ -179,7 +181,7 @@ fun Startmatch(navController: NavController) {
                             }
 
                             Spacer(modifier = Modifier.width(80.dp))
-                            SwitchMinimalExample()
+                            SwitchMinimalExample("highlight")
                         }
                     }
                     Spacer(modifier = Modifier.height(30.dp))
@@ -208,7 +210,7 @@ fun Startmatch(navController: NavController) {
                             }
 
                             Spacer(modifier = Modifier.width(80.dp))
-                            SwitchMinimalExample()
+                            SwitchMinimalExample("LED")
                         }
                     }
                 }
@@ -228,13 +230,16 @@ fun Startmatch(navController: NavController) {
                 onClick = {
                     TestUI(playerUiState = playerViewModel.playerUiState
                     )
-                    Api.sendConfig()
+                    Api.sendConfig();
+                    navController.navigate(Screen.Stop.route)
+
                 },
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
                     textBg
                 ),
 //                border = BorderStroke(5.dp, Color.Black)
+
             ) {
                 Text(text = "Done", fontFamily= FontFamily(
                     Font(R.font.montserrat_bold,weight= FontWeight.Normal)
@@ -252,8 +257,37 @@ fun Startmatch(navController: NavController) {
 
 
 @Composable
-fun SwitchMinimalExample() {
+fun SwitchMinimalExample(variable:String) {
     var checked by remember { mutableStateOf(true) }
+    if (checked == true){
+        if(variable == "GPS")
+        {
+            Global.GPS = 1
+        }
+        else if(variable == "highlight")
+        {
+            Global.highlight = 1
+        }
+        else if(variable == "LED")
+        {
+            Global.LED = 1
+        }
+    }
+    else if (checked == false){
+        if(variable == "GPS")
+        {
+            Global.GPS = 0
+        }
+        else if(variable == "highlight")
+        {
+            Global.highlight = 0
+        }
+        else if(variable == "LED")
+        {
+            Global.LED = 0
+        }
+    }
+    Log.d("Config","GPS: " + Global.GPS.toString() + " highlight:" + Global.highlight.toString() + " LED:" + Global.LED.toString() )
 
     Switch(
         checked = checked,

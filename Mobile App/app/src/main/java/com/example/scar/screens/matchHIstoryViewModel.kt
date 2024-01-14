@@ -15,6 +15,7 @@
  */
 package com.example.scar.screens
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -23,6 +24,7 @@ import androidx.lifecycle.viewModelScope
 //import com.example.marsphotos.model.MarsPhoto
 //import com.example.marsphotos.network.MarsApi
 import com.example.scar.network.Api
+import com.example.scar.ui.theme.Global
 import com.example.scar.ui.theme.LeaderboardData
 import com.example.scar.ui.theme.MatchData
 import com.example.scar.ui.theme.MatchHistory
@@ -71,6 +73,7 @@ class MatchHistoryViewModel() : ViewModel() {
             } catch (e: IOException) {
                MatchHistoryUiState.Error
             } catch (e: HttpException) {
+                Log.d("error",e.toString())
                 MatchHistoryUiState.Error
 
             }

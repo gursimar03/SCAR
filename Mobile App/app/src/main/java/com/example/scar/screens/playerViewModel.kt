@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 //import com.example.marsphotos.model.MarsPhoto
 //import com.example.marsphotos.network.MarsApi
 import com.example.scar.network.Api
+import com.example.scar.ui.theme.Global
 import com.example.scar.ui.theme.LeaderboardData
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -59,7 +60,7 @@ class PlayerViewModel() : ViewModel() {
         viewModelScope.launch {
             playerUiState = PlayerUiState.Loading
             playerUiState= try {
-                val newData = Api.retrofitService.getPlayers()
+                val newData = Api.retrofitService.getPlayers(Global.userToken)
 
                 PlayerUiState.Success(
                     newData

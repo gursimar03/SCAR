@@ -7,16 +7,16 @@ alive_second = 0
 heartbeat_rate = 5000
 my_channel = "johns_sd3b_pi"
 
-pubnub = None
+pnconfig = PNConfiguration()
+pnconfig.publish_key = "pub-c-8007c0d5-9aad-4fd5-a754-0205df40c8d7"
+pnconfig.subscribe_key = "sub-c-ad6eb9d1-059a-4ca3-88e0-6905ca4b469a"
+pnconfig.uuid = "Device id"  # Get device name
+
+pubnub = PubNub(pnconfig)
 
 def setup_pubnub():
     global pubnub
-    pnconfig = PNConfiguration()
-    pnconfig.publish_key = "pub-c-8007c0d5-9aad-4fd5-a754-0205df40c8d7"
-    pnconfig.subscribe_key = "sub-c-ad6eb9d1-059a-4ca3-88e0-6905ca4b469a"
-    pnconfig.uuid = "Device id"  # Get device name
-
-    pubnub = PubNub(pnconfig)
+    
 
     # def status_callback(status, event):
     #     if status.category == PNStatusCategory.PN_CONNECTED_CATEGORY:
@@ -42,7 +42,7 @@ def setup_pubnub():
    
 
 def publish_update(channel, message):
-    # return 2
+    
     pubnub.publish().channel(channel).message(message).sync()
     pubnub.add_listener(MySubscribeCallback())
 
@@ -82,7 +82,7 @@ def handle_click(cb):
         value = "off"
     publish_update(my_channel, {"buzzer": value})
 
-# Call setup_pubnub() to initialize PubNub
+#setup_pubnub()
 
 # Uncomment and call the necessary functions based on your requirements
 # time()

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCAR</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css">
+   
+	<script>
+        var frameCount = {{ frame_count }};
+        var imageUrls = [
+            {% for i in range(0, frame_count) %}
+                "{{ url_for('static', filename='images/' + '%05d' % (i * 5) + '.png') }}",
+            {% endfor %}
+        ];
+
+    </script>
+</head>
+<body>
+    <div id="main">
+        <div data-scroll data-scroll-speed="-5" id="page1">
+         
+                <div class="content">
+                    <div class="content__container">
+                      <p class="content__container__text">
+                        Soon On
+                      </p>
+                      
+                      <ul class="content__container__list">
+                        <li class="content__container__list__item"> App Store ! </li>
+                        <li class="content__container__list__item"> Play Store !</li>
+                        <li class="content__container__list__item"> Web !</li>
+                        <li class="content__container__list__item"> <3 ! </li>
+                      </ul>
+                    </div>
+                  </div> 
+        
+		  <img id="navImg" src="{{ url_for('static', filename='images/SCAR_logo.png') }}" alt="">
+            <div class="container">
+                <div class="chevron"></div>
+                <div class="chevron"></div>
+                <div class="chevron"></div>
+                <span class="text">Scroll down</span>
+                <a class="text" href="https://naegele.it">See it in action</a>
+              </div>
+        </div>
+        <div id="page2">
+            <h2>A Project by MasterTag (SD3b)</h2>
+            <h1>Introducing SCAR: Elevate your airsoft experience with our cutting-edge augmented reality scope. Unleash the future of airsoft with SCAR and its companion app.
+            </h1>
+        </div>
+        <div id="page3">
+            <canvas></canvas>
+        </div>
+        <div id="page4">
+            <h1> Featuring a transparent display for crosshair precision, real-time GPS tracking for tactical awareness, and intuitive light indicators for strategic gameplay.</h1>
+        </div>
+        <div id="page14">
+            <div class="page14-inner">
+                <h1>Twitter</h1>
+                <i class="ri-arrow-right-up-line"></i>
+                <div class="center14"></div>
+            </div>
+            <div class="page14-inner">
+                <h1>LinkedIn</h1>
+                <i class="ri-arrow-right-up-line"></i>
+                <div class="center14"></div>
+
+            </div>
+            <div class="page14-inner">
+                <h1>Instagram</h1>
+                <i class="ri-arrow-right-up-line"></i>
+                <div class="center14"></div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.1/gsap.min.js" integrity="sha512-qF6akR/fsZAB4Co1QDDnUXWnaQseLGXoniuSuSlPQK6+aWhlMZcHzkasCSlnWoe+TJuudlka1/IQ01Dnhgq95g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.1/ScrollTrigger.min.js" integrity="sha512-IHDCHrefnBT3vOCsvdkMvJF/MCPz/nBauQLzJkupa4Gn4tYg5a6VGyzIrjo6QAUy3We5HFOZUlkUpP0dkgE60A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

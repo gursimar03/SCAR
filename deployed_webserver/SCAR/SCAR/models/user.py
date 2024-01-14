@@ -13,9 +13,10 @@ class User(db.Model):
     age = db.Column(db.Integer)
     access_level = db.Column(db.Integer, default=0)
     score = db.Column(db.Integer, default=0)
+    token = db.Column(db.String(255), nullable=False)
 
     # Relationships
     sessions = db.relationship('Session', backref='user', lazy=True)
-    # leaderboard = db.relationship('Leaderboard', backref='user', lazy=True)
+    #leaderboard = db.relationship('Leaderboard', backref='user', lazy=True)
     inventory = db.relationship('Inventory', backref='user', lazy=True)
     match_results = db.relationship('MatchResult', backref='user', lazy=True)

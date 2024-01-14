@@ -4,6 +4,7 @@ from pubnub.enums import PNStatusCategory, PNOperationType
 
 from pubnub.callbacks import SubscribeCallback
 from pubnub.enums import PNStatusCategory, PNOperationType
+import requests
 
 
 def my_publish_callback(envelope, status):
@@ -44,8 +45,24 @@ class MySubscribeCallback(SubscribeCallback):
             # encrypt messages and on live data feed it received plain text.
 
     def message(self, pubnub, message):
-        # Handle new message stored in message.message
-        print("incoming message")
-        print(message.message)
+        try:
+            # Assuming the Flask server is running locally, adjust the URL accordingly
+            api_url = "http://scarsd3b.online/api/pi/post_result"
 
+            # Extract the message data from the PubNub message
+            message_data = message.message
 
+            # Make a POST request to the Flask API with the message data
+            response = requests.post(api_url, json=message_data)
+
+            # Check if the request was successful (status code 2xx)
+            if response.ok:
+                print("Message successfully stored using API.")
+            else:
+                print(f"Error storing message. Status code: {response.status_code}")
+
+        except requests.RequestException as req_error:
+            print(f"Request error: {req_error}")
+
+        except Exception as e:
+            print(f"Unexpected error: {str(e)}")

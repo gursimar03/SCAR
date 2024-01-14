@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from SCAR.app_factory import db
 from SCAR.models.weapon import Weapon
+from SCAR.decorator import require_auth
 
 weapon_bp = Blueprint('weapon_bp', __name__)
 
@@ -30,6 +31,7 @@ def get_weapons(user_id):
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @weapon_bp.route('/api/post/weapon', methods=['POST'])
+@require_auth
 def post_weapon():
     try:
         data = request.json

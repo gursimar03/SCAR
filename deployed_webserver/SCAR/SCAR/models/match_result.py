@@ -8,7 +8,6 @@ class MatchResult(db.Model):
     enemies_spotted = db.Column(db.Integer)
     kills = db.Column(db.Integer)
     score = db.Column(db.Integer)
-
     travelled = db.Column(db.Integer)
     match_time = db.Column(db.Integer)
     match_date = db.Column(db.Date)

@@ -1,10 +1,14 @@
 from flask import Blueprint, jsonify, request
 from SCAR.app_factory import db
-from SCAR.models import match_result
+from SCAR.models.match_result import MatchResult
+from SCAR.decorator import require_auth
+from SCAR.models.arena import Arena
+
 
 match_result_bp = Blueprint('match_result_bp', __name__)
 
 @match_result_bp.route('/api/post/match_result', methods=['POST'])
+@require_auth
 def post_match_result():
     try:
         data = request.json
@@ -36,22 +40,78 @@ def post_match_result():
         db.session.rollback()
         return jsonify({'success': False, 'error': str(e)}), 500
 
-@match_result_bp.route('/api/get/match_history', methods=['GET'])
-def get_match_history():
+
+@match_result_bp.route('/api/get/match_history/<int:user_id>', methods=['GET'])
+def get_user_inventory(user_id):
     try:
-        data = request.json
-        user_id = data.get('user_id')
+        # Retrieve match history for a specific user with arena information
+        match_history = (
+            MatchResult.query
+            .join(Arena, MatchResult.arena_id == Arena.arena_id)
+            .filter(MatchResult.user_id == user_id)
+            .all()
+        )
 
-        # Add your get match history logic here, including retrieving the match history from the database
-        match_history = MatchResult.query.filter_by(user_id=user_id).all()
-
-        # Convert the match history to a format you want to return
-        data = [{'match_id': match.match_id, 'user_id': match.user_id, 'weapon_id': match.weapon_id,
-                 'arena_id': match.arena_id, 'enemies_spotted': match.enemies_spotted,
-                 'kills': match.kills, 'deaths': match.deaths, 'score': match.score}
-                for match in match_history]
+        # Convert the match history to the desired format
+        data = [
+            {
+                "match_id": match.match_id,
+                "user_id": match.user_id,
+                "weapon_id": match.weapon_id,
+                "arena": {
+                    "arena_id": match.arena_id,
+                    "arena_name": match.arena.arena_name if match.arena else None
+                },
+                "enemies_spotted": match.enemies_spotted,
+                "kills": match.kills,
+                "score": match.score,
+                "travelled": match.travelled,  # Assuming 'travelled' is a field in your match_result table
+                "match_time": match.match_time,
+                "match_date": str(match.match_date)  # Assuming 'match_date' is a field in your match_result table
+            }
+            for match in match_history
+        ]
 
         return jsonify({'success': True, 'data': data}), 200
 
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
+# Route to get the users gps location history throughout the match
+@match_result_bp.route('/api/get/gps_history', methods=['GET'])
+@require_auth
+def get_gps_history():
+	try:
+		data = request.json
+		user_id = data.get('user_id')
+		match_id = data.get('match_id')
+
+		gps_history = MatchResult.query.filter_by(user_id=user_id, match_id=match_id, status="finished").all()
+  
+		
+		data = [{'match_id': gps.match_id, 'user_id': gps.user_id, 'gps_data': gps.gps_data}
+				for gps in gps_history]
+
+		return jsonify({'success': True, 'data': data}), 200
+
+	except Exception as e:
+		return jsonify({'success': False, 'error': str(e)}), 500
+
+
+# Route to update the match status to finished
+@match_result_bp.route('/api/post/match_status', methods=['POST'])
+@require_auth
+def post_match_status():
+	try:
+		data = request.json
+		match_id = data.get('match_id')
+
+		match_status = MatchResult.query.filter_by(match_id=match_id).first()
+		match_status.status = "finished"
+		db.session.commit()
+
+		return jsonify({'success': True}), 200
+
+	except Exception as e:
+		return jsonify({'success': False, 'error': str(e)}), 500
+

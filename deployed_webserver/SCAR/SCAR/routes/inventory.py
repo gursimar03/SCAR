@@ -1,10 +1,12 @@
 from flask import Blueprint, jsonify, request
 from SCAR.app_factory import db
-from SCAR.models import inventory
+from SCAR.models.inventory import Inventory
+from SCAR.decorator import require_auth
 
 inventory_bp = Blueprint('inventory_bp', __name__)
 
 @inventory_bp.route('/api/get/inventory/<int:user_id>', methods=['GET'])
+@require_auth
 def get_user_inventory(user_id):
     try:
         # Retrieve inventory for a specific user
@@ -19,6 +21,7 @@ def get_user_inventory(user_id):
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @inventory_bp.route('/api/post/inventory', methods=['POST'])
+@require_auth
 def post_user_inventory():
     try:
         data = request.json
@@ -37,6 +40,7 @@ def post_user_inventory():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @inventory_bp.route('/api/delete/inventory', methods=['DELETE'])
+@require_auth
 def delete_user_inventory():
     try:
         data = request.json

@@ -1,3 +1,4 @@
+import os
 from flask import Blueprint, jsonify, request
 from SCAR.app_factory import db
 from SCAR.models.user import User
@@ -26,6 +27,13 @@ def google_register_user():
 
 @user_bp.route('/api/register', methods=['POST'])
 def register_user():
+    auth_header = request.headers.get('Authorization')
+    admin_token = os.environ.get('admin_token')
+    
+    if not auth_header or auth_header != admin_token:
+        return jsonify({'success': False, 'message': 'Invalid Authorization header'}), 401
+
+   
     data = request.json
     email = data.get('email')
     password = data.get('password')
@@ -59,10 +67,7 @@ def login_user():
 
     if user is None or not bcrypt.check_password_hash(user.password, password):
         return jsonify({'success': False, 'message': 'Invalid email or password'}), 401
-
-    # Add your user login logic here, including creating and storing a session
-    # ...
-
+    
     return jsonify({
         'success': True,
         'user_id': user.user_id,

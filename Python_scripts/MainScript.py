@@ -7,6 +7,63 @@ from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
 from pubnub.enums import PNStatusCategory, PNOperationType
 from callback import MySubscribeCallback
+import serial
+import time
+import pynmea2
+from math import radians, sin, cos, sqrt, atan2
+import logging
+
+port = "/dev/serial0"
+priv_coord=(0,0)
+
+def haversine(lat1, lon1, lat2, lon2):
+    # Convert latitude and longitude from degrees to radians
+    lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
+
+    # Haversine formula
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
+    a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+    # Radius of the Earth in kilometers (change it to miles if needed)
+    radius = 6371.0
+
+    # Calculate the distance
+    distance = radius * c
+
+    return distance
+
+def is_inside_area(gps_reading, area_center, area_radius):
+    # Extract latitude and longitude from the GPS reading
+    lat_reading, lon_reading = gps_reading
+
+    # Calculate the distance between the GPS reading and the area center
+    distance = haversine(lat_reading, lon_reading, area_center[0], area_center[1])
+
+    # Check if the distance is within the specified radius
+    return distance <= area_radius
+
+def calculate_distance(gps_data,current_data):
+    
+    lat_reading, lon_reading = gps_data
+    distance = haversine(lat_reading, lon_reading, current_data[0], current_data[1])
+    priv_coord =currnet_data 
+    return distance 
+
+def parseGPS(gps_str):
+    if 'GGA' in gps_str:
+        try:
+            msg = pynmea2.parse(gps_str)
+            print("Timestamp: %s -- Lat: %s %s -- Lon: %s %s -- Satellites: %s" % (msg.timestamp, msg.lat, msg.lat_dir, msg.lon, msg.lon_dir, msg.num_sats))
+            lat = float(msg.lat)
+            lon = float(msg.lon)
+            return lat, lon
+        except pynmea2.nmea.ParseError as e:
+            logging.error(f"error parseig{e}")
+            return 0,0
+
+
 
 
 #import time
@@ -78,21 +135,6 @@ def publish_update(channel, message):
 
 
 
-#Setup the video capture to read from the webcam
-cap = cv2.VideoCapture(1)   
-#Load the mediapipe pose model
-mpPose = mp.solutions.pose
-pose = mpPose.Pose()
-mpDraw = mp.solutions.drawing_utils
-# Get the width and height of the frame
-ret, frame = cap.read()
-height, width, _ = frame.shape
-
-# Define the center and radius of the circle
-center = (width // 2, height // 2)
-radius = min(width, height) // 4
-
-
 
 # function to turn on a specific LED
 def turn_on_led(num):
@@ -121,25 +163,52 @@ def turn_off_all_leds():
     GPIO.output(WEST_LED, GPIO.LOW)
     GPIO.output(EAST_LED, GPIO.LOW)
     GPIO.output(SOUTH_LED, GPIO.LOW)
+    
+cap = cv2.VideoCapture(0)   
+#Load the mediapipe pose model
+mpPose = mp.solutions.pose
+pose = mpPose.Pose()
+mpDraw = mp.solutions.drawing_utils
+# Get the width and height of the frame
+ret, frame = cap.read()
+height, width, _ = frame.shape
 
+# Define the center and radius of the circle
+center = (width // 2, height // 2)
+radius = min(width, height) // 4
 
 def run():
-    count = 0 
+    
+    start_time = time.time()
+    serialPort = serial.Serial(port, baudrate=9600, timeout=0.5)
+    outside = True
+    timeout_counter = 0
+    max_timeout =  5 # Adjust as needed
     out =  False
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
+    runp = True
+    count =0
+    distance= 0 
+    gps_str = serialPort.readline().decode('utf-8')
+    priv_coor= parseGPS(gps_str)
 
+    while runp:
+       
+        ret, frame = cap.read()
+        elapsed_time = time.time()-start_time
+        gps_str = serialPort.readline().decode('utf-8')
+        coord = parseGPS(gps_str)
+        
+       
+        #distance = calculate_distance(priv_coord,coord)
+            
+        
         # Convert the BGR image to RGB
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
         # Process the image and detect bodies
-        results = pose.process(image)
-    
+        results = pose.process(image) 
         # Draw the pose annotations on the image
         annotatedImage = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-        if results.pose_landmarks:
+        if results.pose_landmarks :
             mpDraw.draw_landmarks(annotatedImage, results.pose_landmarks, mpPose.POSE_CONNECTIONS)
 
         # Draw the scope border in the middle of the screen
@@ -160,14 +229,19 @@ def run():
             if inside:
                 if out : 
                     count= count +1 
-                    out = False 
-                                
+                    out = False
+                    print ("count")
+                    print (count)
+                    print("distance")
+                    print (distance)
+                    
                 # If the body is inside the circle, light up the whole border of the window green
                 for i in range(4):
+                    turn_off_led(i)
                     color = (0, 255, 0)
                     cv2.circle(annotatedImage, (int(ledIndicators[i][0]), int(ledIndicators[i][1])), 10, color, -1)
-                    turn_on_led(i)
                     
+                     
             else:
                 # If the body is outside the circle, 8 black dots are drawn on the circle
                 ## to indicate the 8 segments of the circle
@@ -182,29 +256,35 @@ def run():
                     color = (255, 0, 0) if i in closest_leds else (34, 34, 34)
                     cv2.circle(annotatedImage, (int(ledIndicators[i][0]), int(ledIndicators[i][1])), 10, color, -1)
                     if i in closest_leds:
-                        turn_on_led(i)
-                    else:
                         turn_off_led(i)
+                    else:
+                        turn_on_led(i)
             
+        if elapsed_time % 10 == 0:
+          
+            lat,lon = coord
+            runp =  not is_inside_area((lat, lon), (53.986836, -6.397867),1000)
+            print (hi) 
+            if runp == False :
+                print("Exited the loop. GPS coordinates are inside the quadrilateral.")
 
         
         cv2.imshow('Body Detection', annotatedImage)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
+            publish_update(my_channel,{"count":count,"distance": distance})
             break
 
     cap.release()
     cv2.destroyAllWindows()
     GPIO.cleanup()
-    publish_update(my_channel, {"count":count})  
+     
 
 def main():
 
     # Run the program
     run()
 
-# Run the program 
 if __name__ == "__main__":
-    run()
-
+    main()
 

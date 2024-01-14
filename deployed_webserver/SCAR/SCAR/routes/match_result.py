@@ -42,6 +42,7 @@ def post_match_result():
 
 
 @match_result_bp.route('/api/get/match_history/<int:user_id>', methods=['GET'])
+@require_auth
 def get_user_inventory(user_id):
     try:
         # Retrieve match history for a specific user with arena information
@@ -115,3 +116,30 @@ def post_match_status():
 	except Exception as e:
 		return jsonify({'success': False, 'error': str(e)}), 500
 
+@match_result_bp.route('/api/pi/post_result', methods=['POST'])
+def post_result():
+    try:
+        data = request.get_json()
+        kills = data.get('count', 0)
+        distance_travelled = data.get('distance', 0)
+        user_id = 1
+        weapon_id = 1
+        arena_id = 1
+
+        # Update the MatchResult model
+        match_result = MatchResult(
+            user_id=user_id,
+            weapon_id=weapon_id,
+            arena_id=arena_id,
+            kills=kills,
+            travelled=distance_travelled
+        )
+
+        # Add and commit the changes to the database
+        db.session.add(match_result)
+        db.session.commit()
+
+        return jsonify({"success": True}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

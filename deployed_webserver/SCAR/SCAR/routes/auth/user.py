@@ -1,4 +1,7 @@
 import os
+import hashlib
+import random
+import string
 from flask import Blueprint, jsonify, request
 from SCAR.app_factory import db
 from SCAR.models.user import User
@@ -27,7 +30,7 @@ def google_register_user():
 
 @user_bp.route('/api/register', methods=['POST'])
 def register_user():
-    auth_header = request.headers.get('Authorization')
+    auth_header = request.headers.get('Admin-Key')
     admin_token = os.environ.get('admin_token')
     
     if not auth_header or auth_header != admin_token:
@@ -48,7 +51,13 @@ def register_user():
 
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
-    new_user = User(email_address=email, password=hashed_password, username=username)
+    # Generate a random string
+    random_string = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(16))
+
+    # Create a SHA256 hash of the random string
+    sha256_string = hashlib.sha256(random_string.encode()).hexdigest()
+
+    new_user = User(email_address=email, password=hashed_password, username=username, token=sha256_string)
     db.session.add(new_user)
     db.session.commit()
 
@@ -149,3 +158,18 @@ def update_session():
         return jsonify({'success': True, 'message': 'Session updated successfully'}), 200
     else:
         return jsonify({'success': False, 'message': 'Session not found'}), 404
+
+@user_bp.route('/api/get_user_token/<string:username>', methods=['GET'])
+def get_user_token(username):
+    auth_header = request.headers.get('Admin-Key')
+    admin_token = os.environ.get('admin_token')
+    
+    if not auth_header or auth_header != admin_token:
+        return jsonify({'success': False, 'message': 'Invalid Authorization header'}), 401
+    
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        return jsonify({'success': False, 'message': 'User not found'}), 404
+    
+    return jsonify({'success': True, 'token': user.token}), 200
+ 

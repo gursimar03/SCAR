@@ -7,6 +7,7 @@ from SCAR.decorator import require_auth
 leaderboard_bp = Blueprint('leaderboard_bp', __name__)
 
 @leaderboard_bp.route('/api/leaderboard', methods=['GET'])
+@require_auth
 def get_leaderboard():
     try:
         leaderboard_data = (

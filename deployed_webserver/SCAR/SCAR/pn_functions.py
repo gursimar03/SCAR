@@ -82,7 +82,7 @@ def handle_click(cb):
         value = "off"
     publish_update(my_channel, {"buzzer": value})
 
-# Call setup_pubnub() to initialize PubNub
+#setup_pubnub()
 
 # Uncomment and call the necessary functions based on your requirements
 # time()

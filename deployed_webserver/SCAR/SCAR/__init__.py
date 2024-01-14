@@ -7,15 +7,17 @@ from SCAR.routes.match_result import match_result_bp
 from SCAR.routes.leaderboard import leaderboard_bp
 from SCAR.routes.weapon import weapon_bp
 from SCAR.routes.pn_routes import pb_route
-
+from SCAR.pn_functions import setup_pubnub
 
 import os
 
 
 app, db = create_app()
 
+setup_pubnub()
+
 # Set the connector for each blueprint
-#app.register_blueprint(user_bp)
+app.register_blueprint(user_bp)
 app.register_blueprint(leaderboard_bp)
 app.register_blueprint(arena_bp)
 app.register_blueprint(inventory_bp)

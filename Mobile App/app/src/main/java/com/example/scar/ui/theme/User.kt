@@ -20,9 +20,11 @@ data class User(@SerialName(value = "user_id") val userId: Int,
 //                @SerialName(value = "crosshair_id") val crosshairId: Int,
 //                @SerialName(value = "stats") val stats: Stats,
 //                @SerialName(value = "match_history") val matchHistory: List<Match>,
-               ){
+               )
 
-}
+@Serializable
+data class UserTokens(@SerialName(value = "success") val success : Boolean,
+                      @SerialName(value = "token") val token : String)
 
 
 //    @Serializable

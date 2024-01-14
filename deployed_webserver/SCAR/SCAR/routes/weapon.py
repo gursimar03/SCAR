@@ -4,15 +4,25 @@ from SCAR.models.weapon import Weapon
 
 weapon_bp = Blueprint('weapon_bp', __name__)
 
-@weapon_bp.route('/api/get/weapons/', methods=['GET'])
-def get_weapons():
+@weapon_bp.route('/api/get/weapons/<int:user_id>', methods=['GET'])
+def get_weapons(user_id):
     try:
         # Add your get weapons logic here, including retrieving the weapons from the database
-        weapons = Weapon.query.all()
+        weapons = Weapon.query.filter_by(user_id=user_id).all()
 
         # Convert the weapons to a format you want to return
-        data = [{'weapon_id': weapon.weapon_id, 'weapon_name': weapon.weapon_name, 'type': weapon.type}
-                for weapon in weapons]
+        data = [{
+            'user_id': user_id,
+            'weapons': [
+                {
+                    'weapon_id': weapon.weapon_id,
+                    'weapon_name': weapon.weapon_name,
+                    'weapon_type': weapon.type,
+                    'image': weapon.image
+                } for weapon in weapons
+            ]
+        }
+        ]
 
         return jsonify({'success': True, 'data': data}), 200
 

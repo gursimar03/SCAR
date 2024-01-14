@@ -18,9 +18,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,9 +45,10 @@ import androidx.navigation.NavController
 import com.example.scar.R
 import com.example.scar.screens.PlayerUiState
 import com.example.scar.screens.PlayerViewModel
-import com.example.scar.screens.SuccessViewModel
-import com.example.scar.ui.theme.Data
+import com.example.scar.ui.theme.Global
+import com.example.scar.ui.theme.LeaderboardData
 import com.example.scar.ui.theme.Player
+import com.example.scar.ui.theme.Screen
 import com.example.scar.ui.theme.cardBg2
 import com.example.scar.ui.theme.cardBgDark
 import com.example.scar.ui.theme.creme
@@ -53,15 +56,12 @@ import com.example.scar.ui.theme.textBg
 
 //sources
 ///https://stackoverflow.com/questions/72794300/is-there-a-way-to-filter-the-exposed-dropdown-menu-options-depending-on-the-valu/72795638#72795638
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Startmatch(navController: NavController) {
+    var arena by remember { mutableStateOf("Dundalk Arena") }
+
     Surface(modifier = Modifier.fillMaxSize()) {
-//        Image(
-//            painter = painterResource(id = R.drawable.background),
-//            contentDescription = "bg",
-//            contentScale = ContentScale.FillBounds,
-//            modifier = Modifier.fillMaxWidth()
-//        )
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -79,11 +79,11 @@ fun Startmatch(navController: NavController) {
 //                        spotColor = Color.Green,
                         elevation = 8.dp,
                     ),
-                colors = CardDefaults.cardColors(containerColor = cardBg2.copy(alpha = 0.8f))
+                colors = CardDefaults.cardColors(Color.White)
             ) {
                 Text(
                     text = "Configuration",
-                    style = TextStyle(color= Color.White, fontSize = 30.sp),
+                    style = TextStyle(color= Color.Black, fontSize = 30.sp),
                     fontFamily= FontFamily(
                         Font(R.font.montserrat_bold,weight= FontWeight.Normal)
                     ),
@@ -123,8 +123,12 @@ fun Startmatch(navController: NavController) {
                                     modifier = Modifier.padding(15.dp))
                             }
 
-                            Spacer(modifier = Modifier.width(80.dp))
 //                            SwitchMinimalExample()
+                            TextField(
+                                value = arena,
+                                onValueChange = { arena = it },
+
+                            )
                         }
                     }
                     Spacer(modifier = Modifier.height(30.dp))
@@ -152,7 +156,7 @@ fun Startmatch(navController: NavController) {
                             }
 
                             Spacer(modifier = Modifier.width(80.dp))
-                            SwitchMinimalExample()
+                            SwitchMinimalExample("GPS")
                         }
                     }
                     Spacer(modifier = Modifier.height(30.dp))
@@ -181,7 +185,7 @@ fun Startmatch(navController: NavController) {
                             }
 
                             Spacer(modifier = Modifier.width(80.dp))
-                            SwitchMinimalExample()
+                            SwitchMinimalExample("highlight")
                         }
                     }
                     Spacer(modifier = Modifier.height(30.dp))
@@ -210,7 +214,7 @@ fun Startmatch(navController: NavController) {
                             }
 
                             Spacer(modifier = Modifier.width(80.dp))
-                            SwitchMinimalExample()
+                            SwitchMinimalExample("LED")
                         }
                     }
                 }
@@ -228,13 +232,18 @@ fun Startmatch(navController: NavController) {
                         clip = true
                     ),
                 onClick = {
-                    TestUI(playerUiState = playerViewModel.playerUiState)
+                    TestUI(playerUiState = playerViewModel.playerUiState
+                    )
+                    Api.sendConfig();
+                    navController.navigate(Screen.Stop.route)
+
                 },
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
                     textBg
                 ),
 //                border = BorderStroke(5.dp, Color.Black)
+
             ) {
                 Text(text = "Done", fontFamily= FontFamily(
                     Font(R.font.montserrat_bold,weight= FontWeight.Normal)
@@ -252,8 +261,37 @@ fun Startmatch(navController: NavController) {
 
 
 @Composable
-fun SwitchMinimalExample() {
+fun SwitchMinimalExample(variable:String) {
     var checked by remember { mutableStateOf(true) }
+    if (checked == true){
+        if(variable == "GPS")
+        {
+            Global.GPS = 1
+        }
+        else if(variable == "highlight")
+        {
+            Global.highlight = 1
+        }
+        else if(variable == "LED")
+        {
+            Global.LED = 1
+        }
+    }
+    else if (checked == false){
+        if(variable == "GPS")
+        {
+            Global.GPS = 0
+        }
+        else if(variable == "highlight")
+        {
+            Global.highlight = 0
+        }
+        else if(variable == "LED")
+        {
+            Global.LED = 0
+        }
+    }
+    Log.d("Config","GPS: " + Global.GPS.toString() + " highlight:" + Global.highlight.toString() + " LED:" + Global.LED.toString() )
 
     Switch(
         checked = checked,
@@ -288,9 +326,9 @@ fun Succeed(testList: Data){
     Log.d("Players",players.toString())
 
     // Print the player infor  mation
-    players.forEach { player ->
-        println("Leaderboard ID: ${player.leaderboardID}, User ID: ${player.userID}")
-    }
+//    players.forEach { player ->
+//        println("Leaderboard ID: ${player.leaderboardID}, User ID: ${player.userID}")
+//    }
 
 }
 fun Loading2() {

@@ -366,18 +366,21 @@ fun LeaderboardUI(playerUiState: PlayerUiState) {
 }
 
 @Composable
-fun Success(userInfoList: Data){
-    val leaderboardViewModel: LeaderboardViewModel = viewModel()
+fun Success(userInfoList: LeaderboardData){
+//    val leaderboardViewModel: LeaderboardViewModel = viewModel()
 
     Log.d("userInfoList",userInfoList.players.toString())
 
 
     val leaderEntryList:List<LeaderboardEntry> = userInfoList.players.map {
-        LeaderboardEntry(it.leaderboardID.toString(),it.userID)
+        LeaderboardEntry(it.username,it.score)
     }
+    val sortedLeaderboardList = leaderEntryList.sortedByDescending { it.score }
+
     val leaderboardData = remember {
-            leaderEntryList
+        sortedLeaderboardList
     }
+
 
     Log.d("leaderEntryList",leaderEntryList.toString())
 

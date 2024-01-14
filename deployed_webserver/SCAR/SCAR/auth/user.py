@@ -3,6 +3,7 @@ from SCAR.app_factory import db
 from SCAR.models.user import User
 from SCAR.models.session import Session
 from flask_bcrypt import Bcrypt
+import os
 
 bcrypt = Bcrypt()
 
@@ -26,10 +27,16 @@ def google_register_user():
 
 @user_bp.route('/api/register', methods=['POST'])
 def register_user():
-    data = request.json
-    email = data.get('email')
-    password = data.get('password')
-    username = data.get('username')
+    auth_header = request.headers.get('Admin-Key')
+    admin_token = os.environ.get('admin_token')
+    
+    if not auth_header or auth_header != admin_token:
+        return jsonify({'success': False, 'message': 'Invalid Authorization header','auth_header': auth_header, 'admin_token': admin_token}), 401
+
+    # Use request.form to get form data
+    email = request.form.get('email')
+    password = request.form.get('password')
+    username = request.form.get('username')
 
     if not email or not password or not username:
         return jsonify({'success': False, 'message': 'Missing required data'}), 400
@@ -45,6 +52,7 @@ def register_user():
     db.session.commit()
 
     return jsonify({'success': True, 'message': 'Registration successful'}), 200
+
 
 @user_bp.route('/api/login', methods=['POST'])
 def login_user():

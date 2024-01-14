@@ -8,4 +8,15 @@ class MatchResult(db.Model):
     enemies_spotted = db.Column(db.Integer)
     kills = db.Column(db.Integer)
     score = db.Column(db.Integer)
-    status = db.Column(db.String(20), default='in_progress')
+
+    travelled = db.Column(db.Integer)
+    match_time = db.Column(db.Integer)
+    match_date = db.Column(db.Date)
+
+    # Relationship to Arena
+    arena = db.relationship('Arena', backref='match_results', lazy=True)
+
+    # Virtual column for arena_name
+    @property
+    def arena_name(self):
+        return self.arena.arena_name if self.arena else None

@@ -1,23 +1,44 @@
 from flask import Blueprint, jsonify, request
 from SCAR.app_factory import db
 from SCAR.models.leaderboard import Leaderboard
+from SCAR.models.user import User
+import traceback
+
 
 leaderboard_bp = Blueprint('leaderboard_bp', __name__)
+
+from flask import jsonify
+import traceback
 
 @leaderboard_bp.route('/api/leaderboard', methods=['GET'])
 def get_leaderboard():
     try:
-        leaderboard_data = Leaderboard.query.all()
-        data = [{'leaderboard_id': entry.leaderboard_id, 'user_id': entry.user_id} for entry in leaderboard_data]
+        leaderboard_data = (
+            Leaderboard.query
+            .join(User)
+            .add_columns(User.username.label('user_name'), User.score.label('score'), Leaderboard.leaderboard_id, Leaderboard.user_id)
+            .all()
+        )
+
+        data = [{
+            # 'leaderboard_id': entry.leaderboard_id,
+            'user_id': entry.user_id,
+            'user_name': entry.user_name,
+            'score': entry.score
+        } for entry in leaderboard_data]
+
         return jsonify({'success': True, 'data': data}), 200
 
     except Exception as e:
+        # Log the traceback to help identify the issue
+        traceback.print_exc()
         return jsonify({'success': False, 'error': str(e)}), 500
+
 
 @leaderboard_bp.route('/api/leaderboard/<int:leaderboard_id>', methods=['GET'])
 def get_leaderboard_entry(leaderboard_id):
     try:
-        entry = Leaderboard.query.get(leaderboard_id)
+        entry = leaderboard.query.get(leaderboard_id)
         
         if entry:
             data = {'leaderboard_id': entry.leaderboard_id, 'user_id': entry.user_id}

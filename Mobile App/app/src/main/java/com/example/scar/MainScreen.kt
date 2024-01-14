@@ -19,9 +19,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.scar.interfaces.LinkWeapon
 import com.example.scar.interfaces.MainMenu
 import com.example.scar.interfaces.Startmatch
@@ -33,6 +35,8 @@ import com.airbnb.lottie.compose.*
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.example.scar.interfaces.MatchDetails
+import com.example.scar.interfaces.StopTracking
 import kotlinx.coroutines.delay
 
 
@@ -58,7 +62,7 @@ fun SplashScreen(navController: NavController) {
     // Navigate to the main screen after a delay
     LaunchedEffect(key1 = true) {
         delay(2000)  // Delay of 2 seconds
-        navController.navigate(Screen.MainScreen.route) {
+        navController.navigate(Screen.LogIn.route) {
             // Pop up to the splash screen so it won't be available back press
             popUpTo(Screen.SplashScreen.route) { inclusive = true }
         }
@@ -80,6 +84,12 @@ fun Navigation()
         {
 
             leaderboard(region = null,navController = navController)
+        }
+        composable(route = Screen.Stop.route)
+
+        {
+
+            StopTracking(navController = navController)
         }
         composable(route = Leaderboard.Regional.route,
             enterTransition = {
@@ -157,6 +167,29 @@ fun Navigation()
             }){
             LinkWeapon(navController = navController)
         }
+
+        composable(route = Screen.MatchDetail.route + "/{id}",
+            arguments = listOf(navArgument("id")
+            {
+                type = NavType.IntType
+                defaultValue = 0;
+                nullable = false;
+            }),
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(700)
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(700)
+                )
+            }){entry ->
+            MatchDetails(entry.arguments?.getInt("id"), navController = navController)
+        }
+
 
     }
 

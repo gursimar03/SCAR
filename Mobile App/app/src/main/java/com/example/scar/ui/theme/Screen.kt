@@ -11,13 +11,15 @@ sealed class Screen(val route:String){
 
     object LinkWeapon : Screen("linkweapon_screen")
 
-    fun withArgs(args:String): String{
+    object MatchDetail : Screen("matchdetail_screen")
+    object Stop: Screen("stop_screen")
+
+    fun withArgs(args: String): String {
         return buildString {
-            append(route)
-            args.forEach {arg->
-                append("/$arg")
-            }
+            append(route) // Assuming route is declared elsewhere
+            append("/$args") // Append args directly without iterating over each character
         }
     }
+
 
 }

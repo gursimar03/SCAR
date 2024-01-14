@@ -17,16 +17,25 @@ package com.example.scar.network
  */
 
 import Success
-import com.example.scar.screens.LeaderboardUiState
-import com.example.scar.ui.theme.Data
-import com.example.scar.ui.theme.Player
+import android.util.Log
+import com.example.scar.ui.theme.Global
+import com.example.scar.ui.theme.GunData
+import com.example.scar.ui.theme.LeaderboardData
+import com.example.scar.ui.theme.MatchData
 import com.example.scar.ui.theme.User
+import com.example.scar.ui.theme.UserInfo
+import com.example.scar.ui.theme.UserTokens
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Headers
+import retrofit2.http.POST
+import retrofit2.http.Path
 
 //private const val BASE_URL =
 //    "https://scarsd3b.online/
@@ -52,8 +61,43 @@ interface ApiService{
     @GET("api/get/testing")
     suspend fun getTests(): Success
 
-    @GET("leaderboard")
-    suspend fun getPlayers(): Data
+
+//    @GET("api/leaderboard")
+//    suspend fun getPlayers(): LeaderboardData
+
+    @GET("api/leaderboard")
+    suspend fun getPlayers(@Header("User-Key") userToken: String): LeaderboardData
+
+
+    @GET("api/get/match_history/1")
+    suspend fun getMatches(): MatchData
+
+    @Headers("Admin-key:08eff29c780d53adc819e095b2b0f0fdbe88862cafafc9523642124cc5492672")
+    @GET("api/get_user_token/{username}")
+    fun getToken(@Path("username")username:String): Call<UserTokens>
+
+//    @GET("match_history")
+//    suspend fun getMatches(): MatchData
+
+    @GET("api/get/weapons/1")
+    suspend fun getGuns(): GunData
+
+    @GET("api/get/setup-pubnub")
+    fun setupPubnub(): Call<Void>
+
+    @Headers("Admin-key:08eff29c780d53adc819e095b2b0f0fdbe88862cafafc9523642124cc5492672")
+    @POST("/api/register")
+    fun postData(@Body dataModel: UserInfo?): Call<UserInfo?>?
+
+
+
+    //    @GET("api/get/start-config/1/1")
+//    fun sendConfig(): Call<Void>
+    @GET("api/get/start-config/{highlight}/{LED}")
+    fun sendConfig(
+        @Path("highlight")highlight:Int,
+        @Path("LED")LED:Int
+    ): Call<Void>
 }
 
 /**
@@ -63,4 +107,39 @@ object Api {
     val retrofitService: ApiService by lazy {
         retrofit.create(ApiService::class.java)
     }
+
+    fun setupPubnub() {
+        val call = retrofitService.setupPubnub()
+
+        // Execute the request synchronously (not recommended on the main thread)
+        val response = call.execute()
+
+        // Handle the response (check for errors, etc.)
+        if (response.isSuccessful) {
+            Log.d("Success", response.toString())
+        } else {
+            Log.d("Fail", response.toString())
+        }
+    }
+
+
+
+    fun sendConfig() {
+        val call = retrofitService.sendConfig(Global.highlight,Global.LED)
+
+        call.enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+                    Log.d("Success", response.toString())
+                } else {
+                    Log.d("Fail", response.toString())
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Log.d("Fail", "response.toString()")
+            }
+        })
+    }
+
 }

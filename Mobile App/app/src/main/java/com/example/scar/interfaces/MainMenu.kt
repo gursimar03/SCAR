@@ -82,8 +82,9 @@ fun MainMenu(navController: NavController) {
                     .height(550.dp)
                     .padding(16.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White)
-            ) {
-                matchList()
+            ){
+                val matchHistoryModel: MatchHistoryViewModel = viewModel()
+                MatchHistoryUI(matchHistoryModel.matchHistoryUiState, navController);
             }
             Button(
                 modifier = Modifier
@@ -206,7 +207,7 @@ fun matchList()
 }
 
 @Composable
-fun matches(Kills:Int, Spotted:Int, Travelled:Int) {
+fun matches(Kills:Int, Spotted:Int, Travelled:Int, Date:String, navController: NavController, matchID:Int) {
     Card(
         modifier = Modifier
 //                    .fillMaxSize()
@@ -218,7 +219,7 @@ fun matches(Kills:Int, Spotted:Int, Travelled:Int) {
             ),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {    Text(
-        text = "Date",
+        text = Date,
         style = TextStyle(color = Color.Black, fontSize = 30.sp),
         fontFamily = FontFamily(
             Font(R.font.montserrat_bold, weight = FontWeight.Normal)
@@ -384,8 +385,10 @@ fun matches(Kills:Int, Spotted:Int, Travelled:Int) {
                     }
                 }
                                             Spacer(modifier = Modifier.height(35.dp))
-
-                            Button(onClick = { /*TODO*/ }) {
+                            Log.d("ID", matchID.toString())
+                            Button(onClick = {
+                                navController.navigate(Screen.MatchDetail.withArgs(matchID.toString()))
+                            }) {
                                 Icon( Icons.Rounded.KeyboardArrowDown, contentDescription ="Show More" )
 
                             }
@@ -394,6 +397,62 @@ fun matches(Kills:Int, Spotted:Int, Travelled:Int) {
         }
     }
 }
+}
+@Composable
+fun MatchHistoryUI(matchHistory: MatchHistoryUiState, navController: NavController) {
+
+    when (matchHistory) {
+        is MatchHistoryUiState.Loading -> LoadingMatches(navController)
+        is MatchHistoryUiState.Success ->
+            SuccessLoadingMatches(matchHistory.data, navController)
+//
+
+        is MatchHistoryUiState.Error -> LoadingMatches(navController)
+        else -> {
+            LoadingMatches(navController)}
+    }
+}
+
+data class matchData(val kills: Int, val spotted : Int, val travelled : Int, val date:String, val matchID: Int)
+@Composable
+fun LoadingMatches(navController: NavController)
+{
+    val matchDataExample = remember {
+        listOf(
+            matchData(100,25,9000, "2023-11-21",1),
+            matchData(5,1000,200000, "2023-11-21",2),
+            matchData(3,123,123, "2023-11-21",3),
+
+            )
+    }
+
+    LazyColumn {
+        itemsIndexed(matchDataExample) { index, entry ->
+            matches(entry.kills,entry.spotted,entry.travelled,entry.date,navController,entry.matchID)
+        }
+    }
+}
+
+@Composable
+fun SuccessLoadingMatches(matchInfoList: MatchData, navController: NavController)
+{
+    Log.d("userInfoList",matchInfoList.matches.toString())
+
+
+    val matchEntryList:List<matchData> = matchInfoList.matches.map {
+        matchData(it.kills,it.spotted,it.travelled,it.date,it.matchID)
+    }
+    val matchHistoryData = remember {
+        matchEntryList
+    }
+
+    Log.d("leaderEntryList",matchEntryList.toString())
+
+    LazyColumn {
+        itemsIndexed(matchHistoryData) { index, entry ->
+            matches(entry.kills,entry.spotted,entry.travelled,entry.date,navController,entry.matchID)
+        }
+    }
 }
 
 

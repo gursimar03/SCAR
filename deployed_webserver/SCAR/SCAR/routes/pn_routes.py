@@ -35,3 +35,8 @@ def config(highlight,LED):
 # def test():
 #     # Use the 'connector' here for database operations
 #     return jsonify({'success': True}), 200
+
+@pb_route.route('/api/get/start-config/<int:highlight>/<int:LED>', methods=['GET'])
+def config(highlight,LED):
+     publish_update('johns_sd3b_pi', {"highlight": highlight, "LED": LED})
+     return jsonify({'success': True}), 200

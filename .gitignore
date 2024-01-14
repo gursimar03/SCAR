@@ -3,3 +3,10 @@
 __pycache__
 venv
 .gradle/
+Mobile App/.gradle/8.0/executionHistory/executionHistory.lock
+*.lock
+Mobile App/.gradle/8.0/fileHashes/resourceHashesCache.bin
+Mobile App/.gradle/8.0/fileHashes/fileHashes.lock
+Mobile App/.gradle/8.0/fileHashes/resourceHashesCache.bin
+Mobile App/.gradle/buildOutputCleanup/outputFiles.bin
+Mobile App/.gradle/file-system.probe
